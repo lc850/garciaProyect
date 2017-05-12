@@ -17,6 +17,7 @@ class CreateMaterialesGruposTable extends Migration
             $table->increments('id');
             $table->integer('id_grupo')->unsigned();
             $table->integer('id_material')->unsigned();
+            $table->integer('cantidad');
             $table->timestamps();
 
             $table->foreign('id_grupo')

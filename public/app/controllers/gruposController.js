@@ -2,6 +2,7 @@ app.controller('gruposController', function($scope, $http, API_URL, filterFilter
     
     $scope.search="";
     $scope.search2="";
+    $scope.searchMats="";
     $scope.pageSize= 10;
     
     $scope.cargaInicial = function() {
@@ -10,7 +11,7 @@ app.controller('gruposController', function($scope, $http, API_URL, filterFilter
                 $scope.grupos = response.grupos;
                 $scope.tipos = response.tipos;
                 //console.log($scope.tipos);
-                //console.log($scope.grupos);
+                console.log($scope.grupos);
                 $scope.$watch('search', function (term) {
                     $scope.filteredgrupos = filterFilter($scope.grupos, term);
                     $scope.currentPage = 1;
@@ -105,11 +106,97 @@ app.controller('gruposController', function($scope, $http, API_URL, filterFilter
     $scope.materialesGrupo = function(id) {
         $http.get(API_URL + "obtenerMaterialesGrupo/"+id)
             .success(function(response) {
-                $scope.mats_gpo = response;
+                $scope.mats_gpo = response.materiales_grupo;
+                $scope.materiales = response.materiales;
+                $scope.$watch('searchMats', function (term) {
+                $scope.filteredmateriales = filterFilter($scope.materiales, term);
+                $scope.currentPage = 1;
+            });
         }).
         error(function(response) {
              sweetAlert("Ups...", "¡Ocurrió un error!", "Error");
         });
+    }
+
+    $scope.borrarMaterial=function (id, id_gpo) {
+        swal({  title: "¿Está seguro de eliminar este material?",   
+                text: "No se podrá recuperar",   
+                type: "warning",   
+                showCancelButton: true, 
+                cancelButtonText: "Cancelar",  
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "¡Si, Borrar!",   
+                closeOnConfirm: false 
+                }, function(){
+                    $scope.datos={"id":id, "id_gpo":id_gpo};
+                    $http({
+                        method: 'POST',
+                        data: $.param($scope.datos),
+                        url: API_URL + 'removerMaterialGrupo',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).
+                    success(function(response) {
+                        swal("¡Éxito!", "El grupo fue eliminado con éxito.", "success");
+                            $scope.mats_gpo = response.materiales_grupo;
+                            $scope.materiales = response.materiales;
+                            $scope.$watch('searchMats', function (term) {
+                            $scope.filteredmateriales = filterFilter($scope.materiales, term);
+                            $scope.currentPage = 1;
+                        });           
+                    }).
+                    error(function(response) {
+                        sweetAlert("Oops...", "Ocurrió un error!", "error");
+                    }); 
+           });
+        }
+    $scope.agregarMaterialGrupo = function(id_mat, id_gpo, gpo_nom, unidad) {
+        $cantidad=0;
+        $scope.datos="";
+        swal({
+            title: "Cantidad:",
+            text: gpo_nom+" ("+unidad+")",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Teclea la cantidad"
+            },
+            function(inputValue){
+                if (inputValue === false) 
+                return false;      
+                if (inputValue === "") {     
+                    swal.showInputError("Teclea una cantidad");     
+                    return false;   
+                } 
+                if(isNaN(inputValue)){
+                    swal.showInputError("Teclea un número");
+                    return false;    
+                }
+                if (inputValue <= 0) {     
+                    swal.showInputError("Teclea un número mayor que 0");     
+                    return false;
+                }
+                cantidad=inputValue;
+                $scope.datos={"id_mat":id_mat, "id_gpo":id_gpo, "cantidad":cantidad};
+                $http({
+                        method: 'POST',
+                        data: $.param($scope.datos),
+                        url: API_URL + 'agregarMaterialGrupo',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).
+                    success(function(response) {
+                        swal("Correcto!", "Cantidad: " + inputValue, "success");
+                            $scope.mats_gpo = response.materiales_grupo;
+                            $scope.materiales = response.materiales;
+                            $scope.$watch('searchMats', function (term) {
+                            $scope.filteredmateriales = filterFilter($scope.materiales, term);
+                            $scope.currentPage = 1;
+                        });           
+                    }).
+                    error(function(response) {
+                        sweetAlert("Oops...", "Ocurrió un error!", "error");
+                    }); 
+            });
     }
 
 });

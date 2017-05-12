@@ -38,10 +38,10 @@
 	    		<tr ng-repeat="g in filteredgrupos | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
 	    			<td class="text-center"><% g.id %></td>
 	    			<td class="text-center"><% g.descripcion %></td>
-	    			<td class="text-center"><% g.tipo %></td>
+	    			<td class="text-center"><% g.tipo_desc %></td>
 	    			<td class="text-center">
               <a class="btn btn-xs btn-success" href="{{url('materialesGrupo')}}/<%g.id%>"><i class="glyphicon glyphicon-wrench"></i></a>
-	    				<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#dataUpdate" data-id="<% g.id %>" data-descripcion="<% g.descripcion %>" data-tipo="<% g.tipo %>" data-idtipo="<% g.id_tipo %>"><i class="glyphicon glyphicon-edit"></i></button>
+	    				<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#dataUpdate" data-id="<% g.id %>" data-descripcion="<% g.descripcion %>" data-tipo="<% g.tipo_desc %>" data-idtipo="<% g.id_tipo %>"><i class="glyphicon glyphicon-edit"></i></button>
               <button type="button" class="btn btn-xs btn-danger" ng-click="borrar(g.id)"><i class="glyphicon glyphicon-remove"></i></button>
 	    			</td>
 	    		</tr>

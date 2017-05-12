@@ -10,6 +10,56 @@
  * Core: General Layout Style
  * -------------------------
  */
+ .left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 30px;    
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+    z-index: 11111;
+}
+.right-inner-addon {
+    position: relative;
+}
+.right-inner-addon input {
+    padding-right: 30px;    
+}
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+    color: #999;
+    z-index: 11111;
+}
+.search-icon {
+    position: absolute;
+    top: 47%;
+    right: 25px;
+    margin-top: -10px;
+}
+ /* align glyph */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { righ: ;t: 0px;}
+
+/* add padding */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 60px; }
+
+.inner-addon {
+  position: relative;
+}
+
+/* style glyph */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
 html,
 body {
   height: 100%;

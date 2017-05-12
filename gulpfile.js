@@ -14,7 +14,6 @@ elixir(function(mix) {
 
 elixir(function(mix) {
     mix.scripts([
-        'jquery-3.1.1.min.js',
         'angular.min.js',
         'app/app.js',
         'bootstrap.min.js',

@@ -11,10 +11,10 @@ class Grupos extends Model
 
     public static function regresarGrupos(){
     	$grupos=DB::table('grupos')
-    		->join('tipos', 'grupos.id_tipo', '=', 'tipos.id')
     		->where('grupos.activo', '=', 1)
+            ->join('tipos', "grupos.id_tipo", "=", "tipos.id")
     		->orderBy('grupos.id', 'ASC')
-    		->select('grupos.id', 'grupos.descripcion', 'tipos.descripcion AS tipo', 'tipos.id AS id_tipo')
+            ->select("grupos.*", "tipos.descripcion AS tipo_desc")
     		->get();
 
     	return $grupos;

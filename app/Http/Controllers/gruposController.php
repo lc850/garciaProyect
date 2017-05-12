@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Grupos;
 use App\Tipos;
+use App\Materiales;
 use App\materiales_grupos;
 use DB;
 
@@ -47,6 +48,24 @@ class gruposController extends Controller
 
     public function obtenerMaterialesGrupo($id){
     	$materiales_grupo=materiales_grupos::obtenerMaterialesGrupo($id);
-    	return response()->json($materiales_grupo);
+    	$materiales=materiales_grupos::regresarMaterialesNoGrupo($id);
+    	return response()->json(array("materiales_grupo" => $materiales_grupo, "materiales" => $materiales));
     }
+
+    public function removerMaterialGrupo(Request $request){
+    	$mat_gpo=materiales_grupos::find($request->input('id'));
+    	$mat_gpo->delete();
+    	$materiales_grupo=materiales_grupos::obtenerMaterialesGrupo($request->input('id_gpo'));
+    	$materiales=materiales_grupos::regresarMaterialesNoGrupo($request->input('id_gpo'));
+    	return response()->json(array("materiales_grupo" => $materiales_grupo, "materiales" => $materiales));
+    }
+
+    public function agregarMaterialGrupo(Request $request){
+    	materiales_grupos::nuevo($request->input('id_mat'), $request->input('id_gpo'), $request->input('cantidad'));
+    	$materiales_grupo=materiales_grupos::obtenerMaterialesGrupo($request->input('id_gpo'));
+    	$materiales=materiales_grupos::regresarMaterialesNoGrupo($request->input('id_gpo'));
+    	return response()->json(array("materiales_grupo" => $materiales_grupo, "materiales" => $materiales));
+    }
+
+
 }

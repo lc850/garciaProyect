@@ -8,7 +8,9 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{{asset("css/all.css")}}">
   <script src="{{ asset("js/jquery-2.2.3.min.js") }}"></script>
+  <script src="{{ asset("js/moment.min.js") }}"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <link rel="stylesheet" href="{{ asset("css/jquery-ui.css") }}">
   <script src="{{ asset("js/jquery-ui.min.js") }}"></script>
 <style type="text/css">
     [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, x-ng-cloak, .ng-hide {
@@ -170,14 +172,37 @@
           </ul>
         </li> -->
         <li>
+          <a href="{{url('/misDatos')}}">
+            <i class="fa fa-list-alt"></i> <span>Mis datos</span>
+          </a>
+        </li>
+        <li>
           <a href="{{url('/materiales')}}">
             <i class="fa fa-wrench"></i> <span>Materiales</span>
           </a>
         </li>
         <li>
           <a href="{{url('/grupos')}}">
-            <i class="fa fa-gears"></i> <span>Grupos</span>
+            <i class="fa fa-object-group"></i> <span>Grupos</span>
           </a>
+        </li>
+        <li>
+          <a href="{{url('/clientes')}}">
+            <i class="fa fa-users"></i> <span>Clientes</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{url('/cotizaciones')}}">
+            <i class="fa fa-file-text-o"></i> <span>Cotizaciones</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('/logout') }}"
+              onclick="event.preventDefault();
+              document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> <span>Salir</span></a>
+            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            </form>
         </li>
       </ul>
     </section>
@@ -206,6 +231,9 @@
   </footer>
 </div>
 <script src="{{ asset("js/all.js") }}"></script>
+<script src="{{ asset("js/moment.min.js") }}"></script>
+<script src="{{ asset("js/daterangepicker.js") }}"></script>
+<!-- datepicker -->
 <script src="{{ asset("js/ui-bootstrap-tpls.min.js") }}"></script>
 <script src="{{ asset("js/angular-aria.min.js") }}"></script>
 <script src="{{ asset("js/angular-animate.min.js") }}"></script>

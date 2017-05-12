@@ -68,6 +68,43 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/obtenerMaterialesGrupo/{id}', 'gruposController@obtenerMaterialesGrupo');
 
+	Route::post('/removerMaterialGrupo', 'gruposController@removerMaterialGrupo');
+
+	Route::post('/agregarMaterialGrupo', 'gruposController@agregarMaterialGrupo');
+
+	//Cotizacion
+
+	Route::get('/cotizaciones', 'cotizacionesController@index');
+
+	Route::get('/obtenerCotizaciones', 'cotizacionesController@obtenerCotizaciones');
+
+	Route::post('/registrarCotizacion', 'cotizacionesController@registrarCotizacion');
+
+	Route::post('/removerCotizacion', 'cotizacionesController@removerCotizacion');
+
+	Route::post('/actualizarCotizacion', 'cotizacionesController@actualizarCotizacion');
+
+	Route::get('/detalleCotizacion/{id}', 'cotizacionesController@detalleCotizacion');
+
+	Route::post('/gruposCotizacion', 'cotizacionesController@gruposCotizacion');
+
+	Route::post('/removerGrupoCotizacion', 'cotizacionesController@removerGrupoCotizacion');
+
+	Route::get('/cotizacionPDF/{id}', 'cotizacionesController@cotizacionPDF');
+
+
+	//Clientes
+
+	Route::get('/clientes', 'clientesController@index');
+
+	Route::get('/obtenerClientes', 'clientesController@obtenerClientes');
+
+	Route::post('/registrarCliente', 'clientesController@registrarCliente');
+
+	Route::post('/removerCliente', 'clientesController@removerCliente');
+
+	Route::post('/actualizarCliente', 'clientesController@actualizarCliente');
+
 });
 
 Auth::routes();
