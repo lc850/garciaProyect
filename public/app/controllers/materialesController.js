@@ -4,7 +4,7 @@ app.controller('materialesController', function($scope, $http, API_URL, filterFi
     $scope.pageSize= 20;
     
     $scope.cargaInicial = function() {
-        $http.get(API_URL + "/obtenerMateriales")
+        $http.get(API_URL + "obtenerMateriales")
             .success(function(response) {
                 $scope.materiales = response;
                 //console.log($scope.materiales);
