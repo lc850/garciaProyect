@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Carbon\Carbon;
+use App\detalle_cotizaciones;
 
 class Cotizaciones extends Model
 {
@@ -110,6 +111,65 @@ class Cotizaciones extends Model
             ->get();
 
         return $total;
+    }
+
+    public static function regresarGruposNoCotizacion($id){
+        $lista=DB::table('detalle_cotizaciones')
+            ->where('id_cotizacion', '=', $id)
+            ->pluck('id_grupo');
+
+        $grupos=DB::table('grupos')
+            ->whereNotIn('id', $lista)
+            ->where('activo', '=', 1)
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        return $grupos;
+    }
+
+    public static function agregarGrupoCotizacion($request){
+        $id_grupo=$request->input('id_gpo');
+        $id_cot=$request->input('id_cot');
+        $mats=DB::table('materiales_grupos')
+            ->where('id_grupo', '=', $id_grupo)
+            ->join('materiales', 'materiales_grupos.id_material', '=', 'materiales.id')
+            ->select('materiales.*', 'materiales_grupos.cantidad AS cant_mat')
+            ->get();
+        foreach ($mats as $m) {
+            $detalle=new detalle_cotizaciones();
+            $detalle->id_cotizacion=$id_cot;
+            $detalle->id_grupo=$id_grupo;
+            $detalle->id_material=$m->id;
+            $detalle->cantidad=$m->cant_mat;
+            $detalle->precio=$m->precio;
+            $detalle->save();
+        }
+        return count($mats);
+    }
+
+    public static function removerMaterialCotizacion($request){
+        $elemento=detalle_cotizaciones::find($request->input('id'));
+        $elemento->delete();
+        return 1;
+    }
+
+    public static function existeMaterialGrupo($request){
+        $material=detalle_cotizaciones::where('id_cotizacion', '=', $request->input('id_cot'))
+            ->where('id_grupo', '=', $request->input('id_gpo'))
+            ->where('id_material', '=', $request->input('id_mat'))
+            ->get();
+
+        return count($material);
+    }
+
+    public static function agregarMaterialGrupoCotizacion($request){
+        $nuevo=new detalle_cotizaciones();
+        $nuevo->id_cotizacion=$request->input('id_cot');
+        $nuevo->id_grupo=$request->input('id_gpo');
+        $nuevo->id_material=$request->input('id_mat');
+        $nuevo->cantidad=$request->input('cantidad');
+        $nuevo->precio=$request->input('precio');
+        $nuevo->save();
     }
 
 }

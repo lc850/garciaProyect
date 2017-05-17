@@ -103,6 +103,7 @@
     float: right;
     width: 32%;
   }
+  .whatever { page-break-after: always; }
   </style>
   <meta charset="UTF-8">
   <title>Cotización número</title>
@@ -157,7 +158,7 @@
         <thead>
           <tr>
             <th width="10%">Nro.</th>
-            <th width="70%">Grupo</th>
+            <th width="70%">Descripcion</th>
             <th width="20%">Total</th>
           </tr>
         </thead>
@@ -193,6 +194,7 @@
          <br><br>Sin mas por el momento nos despedimos de usted con un cordial saludo esperando su pronta respuesta</p>
       <br><br><br>
     </div>
+
     <div id="nom">
         <p align="center">
           <strong>A T E N T A M E N T E</strong><br>
@@ -205,5 +207,6 @@
   </div>
 
   
+
 </body>
 </html>

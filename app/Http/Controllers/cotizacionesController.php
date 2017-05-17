@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Clientes;
 use App\Cotizaciones;
+use App\Materiales;
 use Carbon\Carbon;
 use DB;
 use PDF;
@@ -48,14 +49,18 @@ class cotizacionesController extends Controller
 
     public function gruposCotizacion(Request $request){
         $id_cot=$request->input('id');
-        $materialesGrupo=Cotizaciones::regresaGruposCotizacion($id_cot);
-        return response()->json($materialesGrupo);
+        $materiales=Materiales::regresarMateriales();
+        $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($id_cot);
+        $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($id_cot);
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion, "materiales" => $materiales));
     }
 
     public function removerGrupoCotizacion(Request $request){
         Cotizaciones::removerGrupoCotizacion($request);
-        $materialesGrupo=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
-        return response()->json($materialesGrupo);
+        $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
+        $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($request->input("id_cot"));
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion));
+
     }
 
     public function cotizacionPDF($id){
@@ -71,6 +76,36 @@ class cotizacionesController extends Controller
         $vista=view('PDF/cotizacionPDF', compact('cotizacion', 'listado', 'i', 'total'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);
-        return $pdf->stream(); 
+        return $pdf->stream('Cotizacion'.$cotizacion->folio); 
+    }
+
+    public function agregarGrupoCotizacion(Request $request){
+        $vacio=Cotizaciones::agregarGrupoCotizacion($request);
+        $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
+        $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($request->input("id_cot"));
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion, "vacio" => $vacio));
+    }
+
+    public function removerMaterialCotizacion(Request $request){
+        Cotizaciones::removerMaterialCotizacion($request);
+        $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
+        $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($request->input("id_cot"));
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion));
+    }
+
+    public function agregarMaterialGrupoCotizacion(Request $request){
+        Cotizaciones::agregarMaterialGrupoCotizacion($request);
+        $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
+        $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($request->input("id_cot"));
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion));
+    }
+
+    public function existeMaterialGrupo(Request $request){
+        $b=0;
+        $b=Cotizaciones::existeMaterialGrupo($request);
+        return $b;
     }
 }
+
+
+

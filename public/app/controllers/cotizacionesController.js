@@ -3,7 +3,7 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
     $scope.search="";
     $scope.search2="";
     $scope.searchMats="";
-    $scope.pageSize= 10;
+    $scope.pageSize= 8;
     //Mandar la hora del server
     var hoy=moment().format("YYYY-MM-DD");
 
@@ -118,8 +118,17 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).
             success(function(response) {
-                $scope.gruposCotizacion = response;
-                console.log($scope.gruposCotizacion);           
+                $scope.gruposCotizacion = response.grupos_cotizacion;
+                $scope.gpoNoCot=response.gpo_noCot;
+                $scope.materiales=response.materiales;
+                $scope.$watch('searchMats', function (term) {
+                    $scope.filteredmateriales = filterFilter($scope.materiales, term);
+                    $scope.currentPage = 1;
+                });
+                $scope.$watch('search2', function (term) {
+                    $scope.filteredgpoNoCot = filterFilter($scope.gpoNoCot, term);
+                    $scope.currentPage = 1;
+                });
         }).
         error(function(response) {
             sweetAlert("Oops...", "Ocurrió un error!", "error");
@@ -144,12 +153,147 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     }).
                     success(function(response) {
-                        swal("¡Éxito!", "La cotización fue eliminada con éxito.", "success");
-                            $scope.gruposCotizacion = response;         
+                        swal("¡Éxito!", "El grupo fue eliminado con éxito.", "success");
+                        $scope.gruposCotizacion = response.grupos_cotizacion;
+                        $scope.gpoNoCot=response.gpo_noCot;
+                        $scope.$watch('search2', function (term) {
+                        $scope.filteredgpoNoCot = filterFilter($scope.gpoNoCot, term);
+                        $scope.currentPage = 1;
+                        });      
                     }).
                     error(function(response) {
                         sweetAlert("Oops...", "Ocurrió un error!", "error");
                     }); 
            });
         }
+
+    $scope.agregarGrupoCotizacion = function(id_cot, gpo) {
+                $scope.datos={"id_cot":id_cot, "id_gpo":gpo};
+                $http({
+                        method: 'POST',
+                        data: $.param($scope.datos),
+                        url: API_URL + 'agregarGrupoCotizacion',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).
+                    success(function(response) {
+                        if(response.vacio==0){
+                            sweetAlert("Oops...", "¡El grupo no se puede agregar porque está vacío!", "error");
+                            return;
+                        }
+                        swal("¡Éxito!", "El grupo fue agregado con éxito.", "success");
+                            $scope.gruposCotizacion = response.grupos_cotizacion;
+                            $scope.gpoNoCot=response.gpo_noCot;
+                            $scope.$watch('search3', function (term) {
+                            $scope.filteredgpoNoCot = filterFilter($scope.gpoNoCot, term);
+                            $scope.currentPage = 1;
+                        });         
+                    }).
+                    error(function(response) {
+                        sweetAlert("Oops...", "Ocurrió un error!", "error");
+                    }); 
+    }
+
+    $scope.borrarMaterial=function (id_detalle, id_cot) {
+        swal({  title: "¿Está seguro de eliminar este material?",   
+                text: "No se podrá recuperar",   
+                type: "warning",   
+                showCancelButton: true, 
+                cancelButtonText: "Cancelar",  
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "¡Si, Borrar!",   
+                closeOnConfirm: false 
+                }, function(){
+                    $scope.datos={"id":id_detalle, "id_cot":id_cot};
+                    $http({
+                        method: 'POST',
+                        data: $.param($scope.datos),
+                        url: API_URL + 'removerMaterialCotizacion',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).
+                    success(function(response) {
+                        swal("¡Éxito!", "El material fue eliminado con éxito.", "success");
+                            $scope.gruposCotizacion = response.grupos_cotizacion;
+                            $scope.gpoNoCot=response.gpo_noCot;
+                            $scope.$watch('search3', function (term) {
+                            $scope.filteredgpoNoCot = filterFilter($scope.gpoNoCot, term);
+                            $scope.currentPage = 1;
+                        });             
+                    }).
+                    error(function(response) {
+                        sweetAlert("Oops...", "Ocurrió un error!", "error");
+                    }); 
+           });
+        }
+    $scope.cargaDatos = function (id_cot, id_gpo){
+        $scope.datosCotizacion={"id_cot": id_cot, "id_gpo": id_gpo};
+    }
+
+    $scope.agregarMaterialGrupoCotizacion = function(mat) {
+        id_cot=$scope.datosCotizacion.id_cot;
+        id_gpo=$scope.datosCotizacion.id_gpo;
+        $scope.datos={"id_cot": id_cot, "id_gpo": id_gpo, "id_mat": mat.id};
+        $http({
+            method: 'POST',
+            data: $.param($scope.datos),
+            url: API_URL + 'existeMaterialGrupo',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).
+        success(function(response) {
+            if(response==0){
+                $cantidad=0;
+                $scope.datos="";
+                swal({
+                    title: "Cantidad:",
+                    text: mat.descripcion+" ("+mat.unidad+")",
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    animation: "slide-from-top",
+                    inputPlaceholder: "Teclea la cantidad"
+                    },
+                    function(inputValue){
+                        if (inputValue === false) 
+                        return false;      
+                        if (inputValue === "") {     
+                            swal.showInputError("Teclea una cantidad");     
+                            return false;   
+                        } 
+                        if(isNaN(inputValue)){
+                            swal.showInputError("Teclea un número");
+                            return false;    
+                        }
+                        if (inputValue <= 0) {     
+                            swal.showInputError("Teclea un número mayor que 0");     
+                            return false;
+                        }
+                        cantidad=inputValue;
+                        $scope.datos={"id_mat":mat.id, "id_gpo":id_gpo, "id_cot":id_cot, "cantidad":cantidad, "precio":mat.precio};
+                        $http({
+                                method: 'POST',
+                                data: $.param($scope.datos),
+                                url: API_URL + 'agregarMaterialGrupoCotizacion',
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                            }).
+                            success(function(response) {
+                                swal("Correcto!", "Se agregaron " + inputValue + " " +mat.descripcion, "success");
+                                    $scope.gruposCotizacion = response.grupos_cotizacion;
+                                    $scope.gpoNoCot=response.gpo_noCot;
+                                    $scope.$watch('search3', function (term) {
+                                    $scope.filteredgpoNoCot = filterFilter($scope.gpoNoCot, term);
+                                    $scope.currentPage = 1;
+                                });          
+                            }).
+                            error(function(response) {
+                                sweetAlert("Oops...", "Ocurrió un error!", "error");
+                            }); 
+                    });
+            }
+            else{
+                sweetAlert("Oops...", "¡El Material ya existe en este grupo!", "error");
+            }        
+        }).
+        error(function(response) {
+            sweetAlert("Oops...", "Ocurrió un error!", "error");
+        }); 
+    }
 });

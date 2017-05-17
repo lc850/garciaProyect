@@ -11,7 +11,7 @@
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-    <li><a href="{{url('/Cotizaciones')}}">Cotizaciones</a></li>
+    <li><a href="{{url('/cotizaciones')}}">Cotizaciones</a></li>
     <li class="active">Detalle cotización</li>
 </ol>
 @stop
@@ -42,7 +42,7 @@
         <ul class="nav navbar-nav">
           <!-- <li><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
           <li>
-            <a href="#">
+            <a data-toggle="modal" href="#agregarGrupos">
               <i class="fa fa-object-group" aria-hidden="true"></i>&nbsp;&nbsp;Agregar grupo
             </a>
           </li>
@@ -54,8 +54,8 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Agregar grupo</a></li>
-              <li><a href="{{url('cotizacionPDF')}}">Generar PDF</a></li>
+              <li><a data-toggle="modal" href="#agregarGrupos">Agregar grupo</a></li>
+              <li><a href="{{url('cotizacionPDF')}}/{{$cotizacion->id}}" target="_blank">Generar PDF</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="{{url('/cotizaciones')}}">Regresar</a></li>
             </ul>
@@ -64,8 +64,8 @@
         <form class="navbar-form navbar-left">
           <div class="form-group">
             <div class="left-inner-addon">
-              <i class="fa fa-search"></i>
-              <input ng-model="search" type="text"  class="form-control" placeholder="Buscar material">
+              <i class="fa fa-search" style="z-index:0;"></i>
+              <input ng-model="search" type="text"  class="form-control" placeholder="Buscar grupo">
             </div> 
           </div>
         </form>
@@ -95,7 +95,7 @@
                   <th class="text-center">Cantidad</th>
                   <th class="text-center">Precio</th>
                   <th class="text-center">
-                    <button id="btn-add" class="btn btn-info btn-xs" data-target="#" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span>Agregar material</button>
+                    <button id="btn-add" class="btn btn-info btn-xs" data-target="#agregarMateriales" data-toggle="modal" ng-click="cargaDatos({{$cotizacion->id}}, gc.id)"><span class="glyphicon glyphicon-plus"></span>Agregar material</button>
                   </th>
                 </tr>
               </thead>
@@ -105,7 +105,7 @@
                   <td class="text-center"><% gcm.unidad %></td>
                   <td class="text-center"><% gcm.cantidad %></td>
                   <td class="text-center"><% gcm.precio | currency %></td>
-                  <td class="text-center"><button type="button" class="btn btn-xs btn-danger" ng-click=""><i class="glyphicon glyphicon-remove"></i></button></td>
+                  <td class="text-center"><button type="button" class="btn btn-xs btn-danger" ng-click="borrarMaterial(gcm.id, {{$cotizacion->id}})"><i class="glyphicon glyphicon-remove"></i></button></td>
                 </tr>
               </tbody>
             </table>
@@ -114,5 +114,118 @@
       </div>
     </div>
   </div>
+<!-- añadir grupos -->
+	<div class="modal fade" id="agregarGrupos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Añadir Grupos</h4>
+	      </div>
+	      <div class="modal-body">
+          	<div class="box-body">
+          		<div class="input-group">
+  					<span class="input-group-addon" id="basic-addon1">
+  						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+  					</span>
+  					<input ng-model="search3" type="text"  class="form-control" placeholder="Buscar grupos" aria-describedby="basic-addon1">
+				</div>
+          	<div class="table-responsive ng-cloak">
+          		<table class="table table-hover">
+    		        <thead>
+    			          <th class="text-center">ID</th>
+    		          	<th class="text-center">Descripción</th>
+    			          <th class="text-center">Opción</th>
+    		        </thead>
+                <tbody>
+                  <tr ng-repeat="g in filteredgpoNoCot | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
+                    <td class="text-center"><% g.id %></td>
+                    <td class="text-center"><% g.descripcion %></td>
+                    <td class="text-center">
+			               <button id="btn-add" class="btn btn-success btn-xs" ng-click="agregarGrupoCotizacion({{$cotizacion->id}}, g.id)"><span class="glyphicon glyphicon-plus"></span>Agregar</button>
+				    			  </td>
+                  </tr>
+                </tbody>
+    	         </table>
+          		</div>
+          		<div class="text-center">
+    			<uib-pagination total-items="filteredgpoNoCot.length" items-per-page="pageSize" ng-model="currentPage" max-size="8" class="pagination-sm"></uib-pagination>
+    	</div>
+		  	</div>
+	      </div>
+	      <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Añadir Grupos -->
+<!-- añadir materiales -->
+<div class="modal fade" id="agregarMateriales" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Añadir materiales</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body">
+              <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </span>
+            <input ng-model="searchMats" type="text"  class="form-control" placeholder="Buscar material" aria-describedby="basic-addon1">
+        </div>
+              <div class="table-responsive ng-cloak">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Código</th>
+                      <th class="text-center">Descripción</th>
+                      <th class="text-center">Unidad</th>
+                      <th class="text-center">Clasificación</th>
+                    <th class="text-center">Opción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="m in filteredmateriales | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
+                  <td class="text-center"><% m.codigo %></td>
+                  <td class="text-center"><% m.descripcion %></td>
+                  <td class="text-center"><% m.unidad %></td>
+                  <td class="text-center">
+                    <span ng-if="m.clasificacion==1">Baja</span>
+                    <span ng-if="m.clasificacion==2">Media</span>
+                    <span ng-if="m.clasificacion==3">Alta</span>
+                  </td>
+                  <td class="text-center">
+                     <button type="button" class="btn btn-xs btn-success" ng-click="agregarMaterialGrupoCotizacion(m)">Agregar</button>
+                  </td>
+                </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="text-center">
+          <uib-pagination total-items="filteredmateriales.length" items-per-page="pageSize" ng-model="currentPage" max-size="10" class="pagination-sm"></uib-pagination>
+      </div>
+        </div>
+        </div>
+        <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<!-- Fin Añadir materiales -->
 </div>
+<script>
+  $(document).ready(function() {
+    $('#agregarMateriales').on('shown.bs.modal', function() {
+        $(document).off('focusin.modal');
+    });
+  });
+</script>
 @stop

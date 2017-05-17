@@ -65,7 +65,8 @@
                 <div class="box-body">
                 <div class="form-group">
                   <label for="descripcion">Descripción:</label>
-                  <input type="text" class="form-control" ng-model="formRegister.descripcion" name="descripcion" id="descripcion" placeholder="Descripción del grupo" required>
+                  <input type="text" class="form-control" ng-model="formRegister.descripcion" name="descripcion" id="descripcion" placeholder="Descripción del grupo" ng-blur="validaDescripcion()" required>
+                  <p id="error" style="color: red;"> &nbsp;&nbsp;</p>       
                 </div>
                 <div class="form-group">
                 <label for="tipo">Tipo:</label>
@@ -79,7 +80,7 @@
 	      <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-	        <button type="submit" class="btn btn-primary">Guardar</button>
+	        <button type="submit" class="btn btn-primary" id="submit" disabled="true">Guardar</button>
 	      </div>
 	      </form>
 	    </div>
@@ -101,7 +102,7 @@
                 <div class="form-group">
                   <label for="desc">Descripción:</label>
                   <input type="text" class="form-control" name="descripcion1" id="descripcion1" placeholder="Descripción" required>
-                </div>       
+                </div>
                 <div class="form-group">
                 <label for="clasf">Clasificación:</label><br>
                     <select  name="tipo1" id="tipo1" class="form-control" required>

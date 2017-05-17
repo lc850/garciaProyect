@@ -12,9 +12,7 @@
 */
 
 Route::group(['middleware' => ['auth']], function () {
-	Route::get('/', function () {
-	    return view('home');
-	});
+	Route::get('/', 'HomeController@principal');
 
 	Route::get('/blank', function () {
 	    return view('blank');
@@ -37,6 +35,13 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/tablaDatos', function () {
 	    return view('tablaDatos');
 	});
+	//Home controller
+
+	Route::get('/misDatos', 'HomeController@misDatos');
+
+	Route::post('/guardarMisDatos', 'HomeController@guardarMisDatos');
+
+	Route::post('/actualizarMisDatos', 'HomeController@actualizarMisDatos');
 
 	//MAteriales
 
@@ -72,6 +77,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::post('/agregarMaterialGrupo', 'gruposController@agregarMaterialGrupo');
 
+	Route::post('/existeNombreGrupo', 'gruposController@existeNombreGrupo');
+
 	//Cotizacion
 
 	Route::get('/cotizaciones', 'cotizacionesController@index');
@@ -92,6 +99,14 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/cotizacionPDF/{id}', 'cotizacionesController@cotizacionPDF');
 
+	Route::post('/agregarGrupoCotizacion', 'cotizacionesController@agregarGrupoCotizacion');
+
+	Route::post('/removerMaterialCotizacion', 'cotizacionesController@removerMaterialCotizacion');
+
+	Route::post('/agregarMaterialGrupoCotizacion', 'cotizacionesController@agregarMaterialGrupoCotizacion');
+
+	Route::post('/existeMaterialGrupo', 'cotizacionesController@existeMaterialGrupo');
+
 
 	//Clientes
 
@@ -109,4 +124,4 @@ Route::group(['middleware' => ['auth']], function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index');

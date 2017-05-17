@@ -81,10 +81,10 @@
           				<thead>
           					<tr>
           						<th class="text-center">Código</th>
-    							<th class="text-center">Descripción</th>
-    							<th class="text-center">Unidad</th>
-    							<th class="text-center">Clasificación</th>
-    							<th class="text-center">Opción</th>
+    									<th class="text-center">Descripción</th>
+    									<th class="text-center">Unidad</th>
+    									<th class="text-center">Clasificación</th>
+    								<th class="text-center">Opción</th>
           					</tr>
           				</thead>
           				<tbody>

@@ -47,7 +47,7 @@
               <a class="btn btn-xs btn-success" href="{{url('/detalleCotizacion')}}/<%c.id%>"><i class="glyphicon glyphicon-wrench"></i></a>
 	    				<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#dataUpdate" data-id="<% c.id %>" data-descripcion="<% c.descripcion %>" data-cliente="<% c.nombre %>" data-fecha="<% c.fecha %>" data-fechaimpresion="<% c.fecha_impresion %>" data-idcliente="<% c.id_cliente %>"><i class="glyphicon glyphicon-edit"></i></button>
               <button type="button" class="btn btn-xs btn-danger" ng-click="borrar(c.id)"><i class="glyphicon glyphicon-remove"></i></button>
-              <button type="button" class="btn btn-xs btn-default" ng-click="borrar(g.id)"><i class="fa fa-file-pdf-o"></i></button>
+              <a class="btn btn-xs btn-default" href="{{url('cotizacionPDF')}}/<%c.id%>" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
 	    			</td>
 	    		</tr>
     		</tbody>

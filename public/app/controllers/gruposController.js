@@ -11,7 +11,6 @@ app.controller('gruposController', function($scope, $http, API_URL, filterFilter
                 $scope.grupos = response.grupos;
                 $scope.tipos = response.tipos;
                 //console.log($scope.tipos);
-                console.log($scope.grupos);
                 $scope.$watch('search', function (term) {
                     $scope.filteredgrupos = filterFilter($scope.grupos, term);
                     $scope.currentPage = 1;
@@ -197,6 +196,29 @@ app.controller('gruposController', function($scope, $http, API_URL, filterFilter
                         sweetAlert("Oops...", "Ocurrió un error!", "error");
                     }); 
             });
+    }
+
+    $scope.validaDescripcion = function(){
+        $scope.datos={"descripcion": $scope.formRegister.descripcion};
+        $http({
+                method: 'POST',
+                data: $.param($scope.datos),
+                url: API_URL + 'existeNombreGrupo',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).
+                success(function(response) {
+                    if(response==0){
+                        document.getElementById("submit").disabled = false; 
+                        document.getElementById("error").innerHTML = "";
+                    }
+                    else{
+                        document.getElementById("submit").disabled = true; 
+                        document.getElementById("error").innerHTML = "La descripción del grupo ya existe, teclea otra."; 
+                    }          
+                }).
+                error(function(response) {
+                    sweetAlert("Oops...", "Ocurrió un error!", "error");
+                }); 
     }
 
 });

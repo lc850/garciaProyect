@@ -67,5 +67,10 @@ class gruposController extends Controller
     	return response()->json(array("materiales_grupo" => $materiales_grupo, "materiales" => $materiales));
     }
 
+    public function existeNombreGrupo(Request $request){
+        $grupo=Grupos::where('descripcion', '=', $request->input('descripcion'))->get();
+        return count($grupo);
+    }
+
 
 }
