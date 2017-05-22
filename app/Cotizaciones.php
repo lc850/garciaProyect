@@ -6,17 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Carbon\Carbon;
 use App\detalle_cotizaciones;
+use App\Mensajes;
 
 class Cotizaciones extends Model
 {
     protected $table='cotizaciones';
 
+    public function clientes(){
+        return $this->belongsTo('App\Clientes', 'id_cliente');
+    }
+
+    public function mensajes()
+    {
+        return $this->hasOne('App\Mensajes', 'cotizacion_id');
+    }
+
     public static function regresarCotizaciones(){
-    	$cotizaciones=DB::table('cotizaciones')
-    		->join('clientes', 'cotizaciones.id_cliente', '=', 'clientes.id')
-    		->where('cotizaciones.activo', '=', 1)
-    		->select('cotizaciones.*', 'clientes.nombre')
-    		->get();
+    	$cotizaciones=Cotizaciones::with('clientes')->with('mensajes')->where('activo', '=', 1)->get();
     	return $cotizaciones;
     }
 
@@ -33,6 +39,10 @@ class Cotizaciones extends Model
         $folio="C".$cotizacion->id;
         $cotizacion->folio=$folio;
         $cotizacion->save();
+
+        $mensaje=new Mensajes();
+        $mensaje->cotizacion_id=$cotizacion->id;
+        $mensaje->save();
     }
 
     public static function eliminarCotizacion($id)
@@ -169,6 +179,23 @@ class Cotizaciones extends Model
         $nuevo->cantidad=$request->input('cantidad');
         $nuevo->precio=$request->input('precio');
         $nuevo->save();
+    }
+
+    public static function guardarMensajes($id, $request){
+        $mensaje=Mensajes::find($request->input('id_msg'));
+            $mensaje->msg1=$request->input('msg1');
+            $mensaje->msg2=$request->input('msg2');
+            $mensaje->msg3=$request->input('msg3');
+            $mensaje->msg4=$request->input('msg4');
+            $mensaje->msg5=$request->input('msg5');
+        $mensaje->save();
+
+        if($request->input('fecha_impresion')!=null){
+            $cotizacion=Cotizaciones::find($id);
+            $cotizacion->fecha_impresion=$request->input('fecha_impresion');
+            $cotizacion->save();
+        }
+
     }
 
 }

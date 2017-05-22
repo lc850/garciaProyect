@@ -16,7 +16,7 @@
 @stop
 
 @section('contenido')
-<div class="box box-primary" ng-controller="gruposController" ng-init="cargaInicial()">
+<div class="box box-default" ng-controller="gruposController" ng-init="cargaInicial()">
     <div class="box-header with-border">
     <div class="input-group">
   		<span class="input-group-addon" id="basic-addon1">

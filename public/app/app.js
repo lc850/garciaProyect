@@ -5,6 +5,7 @@ var app = angular.module('principalBase', ['ngMaterial', 'ui.bootstrap'], functi
 var ruta=window.location.origin + '/';
 app.constant('API_URL', ruta);
 
+
     app.filter('startFrom', function () {
         return function (input, start) {
             if (input) {

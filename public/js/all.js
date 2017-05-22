@@ -250,23 +250,6 @@ Ac=function(){return{restrict:"A",require:"?ngModel",link:function(a,c,d,e){if(e
 e.$validators.maxlength=function(a,c){return 0>f||e.$isEmpty(c)||c.length<=f}}}}},Cc=function(){return{restrict:"A",require:"?ngModel",link:function(a,c,d,e){if(e){var f=0;d.$observe("minlength",function(a){f=aa(a)||0;e.$validate()});e.$validators.minlength=function(a,c){return e.$isEmpty(c)||c.length>=f}}}}};Q.angular.bootstrap?console.log("WARNING: Tried to load angular more than once."):(Nd(),Pd(ca),A(W).ready(function(){Jd(W,uc)}))})(window,document);!window.angular.$$csp()&&window.angular.element(document).find("head").prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
 //# sourceMappingURL=angular.min.js.map
 
-var app = angular.module('principalBase', ['ngMaterial', 'ui.bootstrap'], function($interpolateProvider) {
-    $interpolateProvider.startSymbol('<%');
-    $interpolateProvider.endSymbol('%>');
-});
-app.constant('API_URL', 'http://localhost/garciaelectricidad2017/public/');
-
-    app.filter('startFrom', function () {
-        return function (input, start) {
-            if (input) {
-                start = +start;
-                return input.slice(start);
-            }
-            return [];
-        };
-    }); 
-
-
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

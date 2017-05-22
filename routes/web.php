@@ -107,6 +107,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::post('/existeMaterialGrupo', 'cotizacionesController@existeMaterialGrupo');
 
+	Route::get('/ajusteCotizacion/{id}', 'cotizacionesController@ajusteCotizacion');
+
+	Route::post('/guardarMensajes/{id}', 'cotizacionesController@guardarMensajes');
+
+
 
 	//Clientes
 

@@ -15,7 +15,6 @@ elixir(function(mix) {
 elixir(function(mix) {
     mix.scripts([
         'angular.min.js',
-        'app/app.js',
         'bootstrap.min.js',
         'app.min.js',
         'jquery.slimscroll.min.js',

@@ -8,6 +8,7 @@ class Clientes extends Model
 {
     protected $table='clientes';
 
+
     public static function regresarClientes(){
     	$clientes=Clientes::where('activo', '=', 1)->get();
     	return $clientes;

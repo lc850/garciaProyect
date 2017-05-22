@@ -9,18 +9,23 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <style>
     body{
-      background-color: #3c8dbc;
+      background-color: #222222;
     }
     .panel{
       margin-top: 8%;
       padding: 0% 1% 0% 1%;
-      border: 1px solid darkblue;
+      border: 1px solid black;
     }
     .top{
       margin-top: 10px;
     }
     .fondo{
       background-color: white;
+    }
+    .fondob{
+      background-color: #df050b;
+      border-color: #df050b;
+      color:white;
     }
   </style>
 </head>
@@ -30,7 +35,7 @@
       <div class="col-xs-12 col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-body text-center">
-            <img src="images/logo3.png" alt="" width="180px">
+            <img src="images/torres.jpeg" alt="" width="200px">
           </div>
           <div class="panel-footer fondo">
             <form class="top" action="{{ route('login') }}" method="post" onsubmit="return recaptcha()">
@@ -64,7 +69,7 @@
               <div class="form-group">    
               </div>
               <div class="form-group">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Iniciar Sesión</button>
+                <button class="btn btn-primary btn-lg btn-block fondob" type="submit">Iniciar Sesión</button>
               </div>
             </form>
             <div class="panel-footer fondo">
