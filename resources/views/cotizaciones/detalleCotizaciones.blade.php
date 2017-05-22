@@ -47,8 +47,8 @@
             </a>
           </li>
           <li>
-            <a href="{{url('cotizacionPDF')}}/{{$cotizacion->id}}" target="_blank">
-              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Generar PDF
+            <a href="{{url('ajusteCotizacion')}}/{{$cotizacion->id}}">
+              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Detalle PDF
             </a>
           </li>
           <li class="dropdown">

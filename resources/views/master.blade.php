@@ -18,7 +18,7 @@
     }
   </style>
 </head>
-<body class="hold-transition skin-blue-light fixed sidebar-mini" ng-app="principalBase">
+<body class="hold-transition skin-red-light fixed sidebar-mini" ng-app="principalBase">
 <div class="wrapper">
 
   <header class="main-header">

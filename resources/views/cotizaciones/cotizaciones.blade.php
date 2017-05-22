@@ -16,7 +16,7 @@
 @stop
 
 @section('contenido')
-<div class="box box-primary" ng-controller="cotizacionesController" ng-init="cargaInicial()">
+<div class="box box-default" ng-controller="cotizacionesController" ng-init="cargaInicial()">
     <div class="box-header with-border">
     <div class="input-group">
   		<span class="input-group-addon" id="basic-addon1">
@@ -40,7 +40,7 @@
 	    		<tr ng-repeat="c in filteredcotizaciones | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
 	    			<td class="text-center"><% c.folio %></td>
 	    			<td class="text-center"><% c.descripcion %></td>
-            <td class="text-center"><% c.nombre %></td>
+            <td class="text-center"><% c.cliente.nombre %></td>
 	    			<td class="text-center"><% c.fecha %></td>
             <td class="text-center"><% c.fecha_impresion %></td>
 	    			<td class="text-center">

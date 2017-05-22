@@ -11,7 +11,7 @@
 @stop
 
 @section('contenido')
-<div class="box box-primary">
+<div class="box box-default">
     <div class="box-header with-border">
         <h3 class="box-title">Datos de la empresa</h3>
     </div>

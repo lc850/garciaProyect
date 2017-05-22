@@ -15,8 +15,8 @@
     }
     hr{
       line-height: 5px;
-      background-color: #0D1975;
-      border-color: #0D1975;
+      background-color: black;
+      border-color: black;
     }
     #div-largo {
       position:fixed;
@@ -36,7 +36,7 @@
     width:250px;
     }
     #info {
-      color:#0D1975;
+      color:black;
       margin: 0;
       text-align: center;
     }
@@ -74,8 +74,8 @@
       text-align: center;
     }
     th {
-      background: #e5f1f9;
-      border-color: #cbe3f2;
+      background: #d2d2d2;
+      border-color: #d2d2d2;
     }
     td, th {
       border-width: 0.5px;
@@ -104,6 +104,9 @@
     width: 32%;
   }
   .whatever { page-break-after: always; }
+  .centrado{
+    text-align: center;
+  }
   </style>
   <meta charset="UTF-8">
   <title>Cotización número</title>
@@ -119,7 +122,7 @@
       <h3 id="info">Ing. Jaime García Cervantes</h3>
     </div>
     <div id="div-a">
-        <img src="images/torres.jpg" width="240px">
+        <img src="images/torres.jpeg" width="240px">
     </div>
   </div>
   <table id="datos" width="100%">
@@ -146,7 +149,7 @@
     </tr>
     <tr>
       <td class="noborde cliente">
-        <h3><strong><u>AT'N: {{$cotizacion->cliente}}</u><br>P R E S E N T E.-</strong></h3>
+        <h3><strong><u>AT'N: {{$cotizacion->clientes->nombre}}</u><br>P R E S E N T E.-</strong></h3>
       </td>
     </tr>
   </table>
@@ -159,14 +162,16 @@
           <tr>
             <th width="10%">Nro.</th>
             <th width="70%">Descripcion</th>
+            <th width="10%">Cantidad</th>
             <th width="20%">Total</th>
           </tr>
         </thead>
         <tbody>
         @foreach($listado as $gpo)
           <tr>
-            <td style="text-align: center;">{{$i=$i+1}}</td>
+            <td class="centrado">{{$i=$i+1}}</td>
             <td>{{$gpo->descripcion}}</td>
+            <td class="centrado">1</td>
             <td>$ {{number_format($gpo->total,2,'.',',')}}</td>
           </tr>
         @endforeach
@@ -176,7 +181,7 @@
         <tbody>
           <tr>
             <th style="text-align: right;">Subtotal:</th>
-            <td align="left" width="62.5%">$ {{number_format($total[0]->total,2,'.',',')}}</td>
+            <td align="left" width="57%">$ {{number_format($total[0]->total,2,'.',',')}}</td>
           </tr>
           <tr>
             <th style="text-align: right;">IVA:</th>
@@ -189,10 +194,11 @@
         </tbody>
       </table>
       <br><br><br><br><br><br>
-      <p><strong>Nota: este presupuesto no incluye pagos ante C.F.E.</strong></p>
-      <p align="justify">Este presupuesto esta sujeto a cambios de acuerdo a la variación de precios que surjan en el mercado
-         <br><br>Sin mas por el momento nos despedimos de usted con un cordial saludo esperando su pronta respuesta</p>
-      <br><br><br>
+      <p align="justify">{{$cotizacion->mensajes->msg1}}</p>
+      <p align="justify">{{$cotizacion->mensajes->msg2}}</p>
+      <p align="justify">{{$cotizacion->mensajes->msg3}}</p>
+      <p align="justify">{{$cotizacion->mensajes->msg4}}</p>
+      <p align="justify">{{$cotizacion->mensajes->msg5}}</p>
     </div>
 
     <div id="nom">

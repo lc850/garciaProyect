@@ -67,11 +67,9 @@ class cotizacionesController extends Controller
         $listado=Cotizaciones::listadoPDF($id);
         $total=Cotizaciones::getTotal($id);
         $i=0;
-        $cotizacion=DB::table('cotizaciones')
-            ->where('cotizaciones.id', '=', $id)
-            ->join('clientes', 'cotizaciones.id_cliente', '=', 'clientes.id')
-            ->select('cotizaciones.*', 'clientes.nombre AS cliente')
-            ->first();
+        $cotizacion=Cotizaciones::find($id);
+
+        //dd($cotizacion);
 
         $vista=view('PDF/cotizacionPDF', compact('cotizacion', 'listado', 'i', 'total'));
         $pdf = \App::make('dompdf.wrapper');
@@ -104,6 +102,16 @@ class cotizacionesController extends Controller
         $b=0;
         $b=Cotizaciones::existeMaterialGrupo($request);
         return $b;
+    }
+
+    public function ajusteCotizacion($id){
+        $cotizacion=Cotizaciones::find($id);
+        return view('cotizaciones/cotizacionPDF', compact('cotizacion'));
+    }
+
+    public function guardarMensajes($id, Request $request){
+        Cotizaciones::guardarMensajes($id, $request);
+        return redirect('/ajusteCotizacion/'.$id);
     }
 }
 
