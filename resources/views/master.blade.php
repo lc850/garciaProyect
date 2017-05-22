@@ -231,6 +231,7 @@
   </footer>
 </div>
 <script src="{{ asset("js/all.js") }}"></script>
+<script src="{{ asset("app/app.js") }}"></script>
 <script src="{{ asset("js/moment.min.js") }}"></script>
 <script src="{{ asset("js/daterangepicker.js") }}"></script>
 <!-- datepicker -->

@@ -97,7 +97,6 @@ class Cotizaciones extends Model
             ->select('grupos.descripcion', DB::raw('SUM(precio) as total'))
             ->where('detalle_cotizaciones.id_cotizacion', '=', $id)
             ->groupBy('grupos.descripcion')
-            ->orderBy('detalle_cotizaciones.id_grupo', 'ASC')
             ->join('grupos', 'detalle_cotizaciones.id_grupo', '=', 'grupos.id')
             ->get();
 
