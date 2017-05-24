@@ -226,7 +226,6 @@
     @if(isset($datos))
       {{$datos->direccion}}
     @endif 
-    , Culiacán, Sin.
     TELS. 717-46-42 Y 715-37-98 CEL. (667)751-60-71 CULIACÁN, SINALOA.
     www.garciaelectricidad.com.mx
     </h6>
