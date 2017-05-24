@@ -2,7 +2,9 @@ var app = angular.module('principalBase', ['ngMaterial', 'ui.bootstrap'], functi
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
 });
-app.constant('API_URL', 'http://localhost/garciaelectricidad2017/public/');
+var ruta=window.location.origin + '/';
+app.constant('API_URL', ruta);
+
 
     app.filter('startFrom', function () {
         return function (input, start) {
@@ -13,3 +15,4 @@ app.constant('API_URL', 'http://localhost/garciaelectricidad2017/public/');
             return [];
         };
     }); 
+
