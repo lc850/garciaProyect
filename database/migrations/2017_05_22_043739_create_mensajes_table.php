@@ -16,11 +16,11 @@ class CreateMensajesTable extends Migration
         Schema::create('mensajes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cotizacion_id')->unsigned();
-            $table->string('msg1', 800);
-            $table->string('msg2', 800);
-            $table->string('msg3', 800);
-            $table->string('msg4', 800);
-            $table->string('msg5', 800);
+            $table->string('msg1', 800)->nullable();
+            $table->string('msg2', 800)->nullable();
+            $table->string('msg3', 800)->nullable();
+            $table->string('msg4', 800)->nullable();
+            $table->string('msg5', 800)->nullable();
             $table->timestamps();
 
             $table->foreign('cotizacion_id')

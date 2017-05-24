@@ -28,7 +28,8 @@
     	<table class="table table-hover">
     		<thead>
     			<th class="text-center">ID</th>
-    			<th class="text-center">Nombre</th>
+    			<th class="text-center">Nombre de la empresa</th>
+          <th class="text-center">Representante</th>
     			<th class="text-center">Correo</th>
           <th class="text-center">Teléfono</th>
     			<th class="text-center">
@@ -39,13 +40,14 @@
 	    		<tr ng-repeat="c in filteredclientes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
 	    			<td class="text-center"><% c.id %></td>
 	    			<td class="text-center"><% c.nombre %></td>
+            <td class="text-center"><% c.representante %></td>
 	    			<td class="text-center"><% c.email %></td>
             <td class="text-center">
               <span ng-if="c.telefono==null">(Sin Datos)</span>
               <% c.telefono %>
             </td>
 	    			<td class="text-center">
-	    				<button type="button" class="btn btn-xs btn-info" data-target="#dataUpdate"data-toggle="modal" data-id="<% c.id %>" data-nombre="<% c.nombre %>" data-email="<% c.email %>" data-telefono="<% c.telefono %>"><i class="glyphicon glyphicon-edit"></i></button>
+	    				<button type="button" class="btn btn-xs btn-info" data-target="#dataUpdate"data-toggle="modal" data-id="<% c.id %>" data-nombre="<% c.nombre %>" data-email="<% c.email %>" data-telefono="<% c.telefono %>" data-representante="<% c.representante %>"><i class="glyphicon glyphicon-edit"></i></button>
               <button type="button" class="btn btn-xs btn-danger" ng-click="borrar(c.id)"><i class="glyphicon glyphicon-remove"></i></button>
 	    			</td>
 	    		</tr>
@@ -69,8 +71,12 @@
 	      <div class="modal-body">
                 <div class="box-body">
                 <div class="form-group">
-                  <label for="nombre">Nombre:</label>
+                  <label for="nombre">Nombre de la empresa:</label>
                   <input type="text" class="form-control" ng-model="formRegister.nombre" name="nombre" id="nombre" placeholder="Nombre del cliente" required>
+                </div>
+                <div class="form-group">
+                  <label for="representante">Representante:</label>
+                  <input type="text" class="form-control" ng-model="formRegister.representante" name="representante" id="representante" placeholder="Nombre del representante" required>
                 </div>
                 <div class="form-group">
                   <label for="nombre">Correo:</label>
@@ -104,8 +110,12 @@
 	      <div class="modal-body">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="nombre">Nombre:</label>
+                  <label for="nombre">Nombre de la empresa:</label>
                   <input type="text" class="form-control" name="nombre1" id="nombre1" placeholder="Nombre del cliente" required>
+                </div>
+                <div class="form-group">
+                  <label for="representante">Representante:</label>
+                  <input type="text" class="form-control" name="representante1" id="representante1" placeholder="Nombre del representante" required>
                 </div>
                 <div class="form-group">
                   <label for="nombre">Correo:</label>
@@ -141,9 +151,11 @@
             var nombre = button.data('nombre') // Extraer la información de atributos de datos
             var email = button.data('email') // Extraer la información de atributos de datos
             var telefono = button.data('telefono') // Extraer la información de atributos de datos
+            var representante = button.data('representante') // Extraer la información de atributos de datos
             var modal = $(this)
             modal.find('.modal-body #id').val(id)
             modal.find('.modal-body #nombre1').val(nombre)
+            modal.find('.modal-body #representante1').val(representante)
             modal.find('.modal-body #correo1').val(email)
             modal.find('.modal-body #telefono1').val(telefono)
         })

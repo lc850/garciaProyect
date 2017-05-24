@@ -20,7 +20,7 @@ class CreateCotizacionesTable extends Migration
             $table->integer('id_cliente')->unsigned();
             $table->date('fecha');
             $table->date('fecha_impresion');
-            $table->boolean('activo')->default(1);;
+            $table->boolean('activo')->default(1);
             $table->timestamps();
 
             $table->foreign('id_cliente')

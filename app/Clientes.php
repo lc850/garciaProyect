@@ -19,6 +19,7 @@ class Clientes extends Model
         $cliente->nombre=$request->input('nombre');
         $cliente->email=$request->input('correo');
         $cliente->telefono=$request->input('telefono');
+        $cliente->representante=$request->input('representante');
         $cliente->activo=1;
         $cliente->save();
     }
@@ -36,6 +37,7 @@ class Clientes extends Model
             $cliente->nombre = $request->input('nombre1');
             $cliente->email = $request->input('email1');
             $cliente->telefono = $request->input('telefono1');
+            $cliente->representante=$request->input('representante1');
             $cliente->save();
     }
 }

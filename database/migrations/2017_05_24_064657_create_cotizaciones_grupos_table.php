@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDetalleCotizacionesTable extends Migration
+class CreateCotizacionesGruposTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateDetalleCotizacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('detalle_cotizaciones', function (Blueprint $table) {
+        Schema::create('cotizaciones_grupos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_cotizacion')->unsigned();
             $table->integer('id_grupo')->unsigned();
-            $table->integer('id_material')->unsigned();
             $table->integer('cantidad');
-            $table->integer('cantidad_gpo');
-            $table->double('precio');
             $table->timestamps();
 
             $table->foreign('id_cotizacion')
@@ -29,10 +26,6 @@ class CreateDetalleCotizacionesTable extends Migration
 
             $table->foreign('id_grupo')
                 ->references('id')->on('grupos')
-                ->onDelete('cascade');
-
-            $table->foreign('id_material')
-                ->references('id')->on('materiales')
                 ->onDelete('cascade');
         });
     }
@@ -44,6 +37,6 @@ class CreateDetalleCotizacionesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('detalle_cotizaciones');
+        Schema::drop('cotizaciones_grupos');
     }
 }

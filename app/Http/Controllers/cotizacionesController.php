@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Clientes;
 use App\Cotizaciones;
 use App\Materiales;
+use App\Datos;
+use App\Grupos;
 use Carbon\Carbon;
 use DB;
 use PDF;
@@ -66,12 +68,13 @@ class cotizacionesController extends Controller
     public function cotizacionPDF($id){
         $listado=Cotizaciones::listadoPDF($id);
         $total=Cotizaciones::getTotal($id);
+        $datos=Datos::first();
         $i=0;
         $cotizacion=Cotizaciones::find($id);
 
         //dd($cotizacion);
 
-        $vista=view('PDF/cotizacionPDF', compact('cotizacion', 'listado', 'i', 'total'));
+        $vista=view('PDF/cotizacionPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);
         return $pdf->stream('Cotizacion'.$cotizacion->folio); 
@@ -112,6 +115,12 @@ class cotizacionesController extends Controller
     public function guardarMensajes($id, Request $request){
         Cotizaciones::guardarMensajes($id, $request);
         return redirect('/ajusteCotizacion/'.$id);
+    }
+
+    public function prueba($id){
+        $mats=Cotizaciones::where('id', $id)->with('grupos')->get();
+        dd($mats);
+        return $mats;
     }
 }
 

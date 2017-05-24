@@ -119,6 +119,7 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
         }).
             success(function(response) {
                 $scope.gruposCotizacion = response.grupos_cotizacion;
+                console.log($scope.gruposCotizacion);
                 $scope.gpoNoCot=response.gpo_noCot;
                 $scope.materiales=response.materiales;
                 $scope.$watch('searchMats', function (term) {
@@ -167,9 +168,35 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
            });
         }
 
-    $scope.agregarGrupoCotizacion = function(id_cot, gpo) {
-                $scope.datos={"id_cot":id_cot, "id_gpo":gpo};
-                $http({
+    $scope.agregarGrupoCotizacion = function(id_cot, gpo, descripcion) {
+        $cantidad=0;
+            swal({
+                title: "Cantidad:",
+                text: "Grupo: "+descripcion,
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "Teclea la cantidad"
+                },
+                function(inputValue){
+                    if (inputValue === false) 
+                        return false;      
+                    if (inputValue === "") {     
+                        swal.showInputError("Teclea una cantidad");     
+                        return false;   
+                    } 
+                    if(isNaN(inputValue)){
+                        swal.showInputError("Teclea un número");
+                        return false;    
+                    }
+                    if (inputValue <= 0) {     
+                        swal.showInputError("Teclea un número mayor que 0");     
+                        return false;
+                    }
+                    cantidad=inputValue;
+                    $scope.datos={"id_cot":id_cot, "id_gpo":gpo, "cantidad_gpo":cantidad};
+                    $http({
                         method: 'POST',
                         data: $.param($scope.datos),
                         url: API_URL + 'agregarGrupoCotizacion',
@@ -190,7 +217,8 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
                     }).
                     error(function(response) {
                         sweetAlert("Oops...", "Ocurrió un error!", "error");
-                    }); 
+                    });
+                }); 
     }
 
     $scope.borrarMaterial=function (id_detalle, id_cot) {
@@ -224,13 +252,14 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
                     }); 
            });
         }
-    $scope.cargaDatos = function (id_cot, id_gpo){
-        $scope.datosCotizacion={"id_cot": id_cot, "id_gpo": id_gpo};
+    $scope.cargaDatos = function (id_cot, id_gpo, cant_gpo){
+        $scope.datosCotizacion={"id_cot": id_cot, "id_gpo": id_gpo, "cant_gpo": cant_gpo};
     }
 
     $scope.agregarMaterialGrupoCotizacion = function(mat) {
         id_cot=$scope.datosCotizacion.id_cot;
         id_gpo=$scope.datosCotizacion.id_gpo;
+        cant_gpo=$scope.datosCotizacion.cant_gpo;
         $scope.datos={"id_cot": id_cot, "id_gpo": id_gpo, "id_mat": mat.id};
         $http({
             method: 'POST',
@@ -267,7 +296,7 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
                             return false;
                         }
                         cantidad=inputValue;
-                        $scope.datos={"id_mat":mat.id, "id_gpo":id_gpo, "id_cot":id_cot, "cantidad":cantidad, "precio":mat.precio};
+                        $scope.datos={"id_mat":mat.id, "id_gpo":id_gpo, "id_cot":id_cot, "cantidad":cantidad, "precio":mat.precio, "cant_gpo": cant_gpo};
                         $http({
                                 method: 'POST',
                                 data: $.param($scope.datos),

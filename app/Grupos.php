@@ -9,6 +9,15 @@ class Grupos extends Model
 {
     protected $table='grupos';
 
+    public function materialesDetalle()
+    {
+        return $this->belongsToMany('App\Materiales', 'detalle_cotizaciones', 'id_grupo', 'id_material')
+         ->withPivot('precio', 'cantidad_gpo', 'id_cotizacion')
+         ->withTimestamps();
+    }
+
+
+
     public static function regresarGrupos(){
     	$grupos=DB::table('grupos')
     		->where('grupos.activo', '=', 1)

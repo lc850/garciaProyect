@@ -21,6 +21,13 @@ class Cotizaciones extends Model
         return $this->hasOne('App\Mensajes', 'cotizacion_id');
     }
 
+    public function grupos(){
+        return $this->belongsToMany('App\Grupos', 'cotizaciones_grupos', 'id_cotizacion', 'id_grupo')
+            ->with('materialesDetalle')
+            ->withPivot('cantidad')
+            ->withTimestamps();
+    }
+
     public static function regresarCotizaciones(){
     	$cotizaciones=Cotizaciones::with('clientes')->with('mensajes')->where('activo', '=', 1)->get();
     	return $cotizaciones;
@@ -67,7 +74,7 @@ class Cotizaciones extends Model
             ->where('detalle_cotizaciones.id_cotizacion', '=', $id)
             ->join('grupos', 'detalle_cotizaciones.id_grupo', '=', 'grupos.id')
             ->join('materiales', 'detalle_cotizaciones.id_material', '=', 'materiales.id')
-            ->select('detalle_cotizaciones.*', 'materiales.descripcion AS mat_nom', 'grupos.descripcion AS gpo_nom', 'materiales.unidad')
+            ->select('detalle_cotizaciones.*', 'materiales.descripcion AS mat_nom', 'grupos.descripcion AS gpo_nom', 'materiales.unidad', 'detalle_cotizaciones.cantidad_gpo')
             ->orderBy('detalle_cotizaciones.id_grupo', 'ASC')
             ->orderBy('detalle_cotizaciones.id_material', 'ASC')
             ->get();
@@ -79,10 +86,11 @@ class Cotizaciones extends Model
             $grupoActual=$materialesGrupo[0]->id_grupo;
             $nom_gpo=$materialesGrupo[0]->gpo_nom;
             $id_gpo=$materialesGrupo[0]->id_grupo;
+            $cant_gpo=$materialesGrupo[0]->cantidad_gpo;
             foreach ($materialesGrupo as $mats) {
                 $grupoActual=$mats->id_grupo;
                 if($grupo!=$grupoActual){
-                    array_push($detalle, array("id" => $id_gpo, "grupo" => $nom_gpo,"materiales" => $materiales));
+                    array_push($detalle, array("id" => $id_gpo, "grupo" => $nom_gpo, "cant_gpo" => $cant_gpo, "materiales" => $materiales, "total" => 0));
                     $materiales=array();
                     $nom_gpo=$mats->gpo_nom;
                     $id_gpo=$mats->id_grupo;
@@ -90,8 +98,16 @@ class Cotizaciones extends Model
                 }
                 array_push($materiales, $mats);
             }
-            array_push($detalle, array("id" => $id_gpo, "grupo" => $nom_gpo,"materiales" => $materiales));
+            array_push($detalle, array("id" => $id_gpo, "grupo" => $nom_gpo, "cant_gpo" => $cant_gpo, "materiales" => $materiales, "total" => 0));
         }
+        for ($i=0; $i < count($detalle); $i++) { 
+            $total=0;
+            for ($j=0; $j < count($detalle[$i]["materiales"]); $j++) { 
+                $total=$total+(($detalle[$i]["materiales"][$j]->precio)*($detalle[$i]["materiales"][$j]->cantidad));
+            }
+            $detalle[$i]["total"]=$total;
+        }
+
         return $detalle;
     }
 
@@ -100,23 +116,22 @@ class Cotizaciones extends Model
             ->where('id_cotizacion', '=', $request->input("id_cot"))
             ->where('id_grupo', '=', $request->input("id_grupo"))
             ->delete();
+
+        DB::table('cotizaciones_grupos')
+            ->where('id_cotizacion', '=', $request->input("id_cot"))
+            ->where('id_grupo', '=', $request->input("id_grupo"))
+            ->delete();
     }
 
     public static function listadoPDF($id){
-        $lista=DB::table('detalle_cotizaciones')
-            ->select('grupos.descripcion', DB::raw('SUM(precio) as total'))
-            ->where('detalle_cotizaciones.id_cotizacion', '=', $id)
-            ->groupBy('grupos.descripcion')
-            ->orderBy('detalle_cotizaciones.id_grupo', 'ASC')
-            ->join('grupos', 'detalle_cotizaciones.id_grupo', '=', 'grupos.id')
-            ->get();
+        $lista=Cotizaciones::where('id', $id)->with('grupos')->get();
 
         return $lista;
     }
 
     public static function getTotal($id){
         $total=DB::table('detalle_cotizaciones')
-            ->select(DB::raw('SUM(precio) as total'))
+            ->select(DB::raw('SUM(cantidad*precio*cantidad_gpo) as total'))
             ->where('id_cotizacion', '=', $id)
             ->get();
 
@@ -151,9 +166,18 @@ class Cotizaciones extends Model
             $detalle->id_grupo=$id_grupo;
             $detalle->id_material=$m->id;
             $detalle->cantidad=$m->cant_mat;
+            $detalle->cantidad_gpo=$m->$id_cot=$request->input('cantidad_gpo');
             $detalle->precio=$m->precio;
             $detalle->save();
         }
+        if(count($mats)>0){
+            $nuevo= new cotizaciones_grupos();
+            $nuevo->id_cotizacion=$id_cot;
+            $nuevo->id_grupo=$id_grupo;
+            $nuevo->cantidad=$request->input('cantidad_gpo');
+            $nuevo->save();
+        }
+
         return count($mats);
     }
 
@@ -179,6 +203,7 @@ class Cotizaciones extends Model
         $nuevo->id_material=$request->input('id_mat');
         $nuevo->cantidad=$request->input('cantidad');
         $nuevo->precio=$request->input('precio');
+        $nuevo->cantidad_gpo=$request->input('cant_gpo');
         $nuevo->save();
     }
 

@@ -79,7 +79,7 @@ app.controller('clientesController', function($scope, $http, API_URL, filterFilt
     };
 
     $scope.submitUpdateCliente = function() {
-        $scope.formUpdate={"nombre1":angular.element('#nombre1').val(),"email1":angular.element('#correo1').val(),"id":angular.element('#id').val(), "telefono1":angular.element('#telefono1').val()};
+        $scope.formUpdate={"nombre1":angular.element('#nombre1').val(),"email1":angular.element('#correo1').val(),"id":angular.element('#id').val(), "telefono1":angular.element('#telefono1').val(), "representante1":angular.element('#representante1').val()};
         $http({
             method: 'POST',
             data: $.param($scope.formUpdate),

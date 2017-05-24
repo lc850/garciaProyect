@@ -79,7 +79,7 @@
       <div class="panel-heading" role="tab" id="heading<%gc.id%>">
         <h4 class="panel-title">
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%gc.id%>" aria-expanded="true" aria-controls="collapse<%gc.id%>">
-             <% gc.grupo %>
+             <% gc.grupo %> (Cantidad: <% gc.cant_gpo %>) Total: <% gc.total | currency %>
           </a>
           <span class="btn btn-default btn-xs pull-right" ng-click="eliminarGrupoCotizacion({{$cotizacion->id}}, gc.id)"><i class="glyphicon glyphicon-remove"></i>Eliminar grupo</span>
         </h4>
@@ -95,7 +95,7 @@
                   <th class="text-center">Cantidad</th>
                   <th class="text-center">Precio</th>
                   <th class="text-center">
-                    <button id="btn-add" class="btn btn-info btn-xs" data-target="#agregarMateriales" data-toggle="modal" ng-click="cargaDatos({{$cotizacion->id}}, gc.id)"><span class="glyphicon glyphicon-plus"></span>Agregar material</button>
+                    <button id="btn-add" class="btn btn-info btn-xs" data-target="#agregarMateriales" data-toggle="modal" ng-click="cargaDatos({{$cotizacion->id}}, gc.id, gc.cant_gpo)"><span class="glyphicon glyphicon-plus"></span>Agregar material</button>
                   </th>
                 </tr>
               </thead>
@@ -142,7 +142,7 @@
                     <td class="text-center"><% g.id %></td>
                     <td class="text-center"><% g.descripcion %></td>
                     <td class="text-center">
-			               <button id="btn-add" class="btn btn-success btn-xs" ng-click="agregarGrupoCotizacion({{$cotizacion->id}}, g.id)"><span class="glyphicon glyphicon-plus"></span>Agregar</button>
+			               <button id="btn-add" class="btn btn-success btn-xs" ng-click="agregarGrupoCotizacion({{$cotizacion->id}}, g.id, g.descripcion)"><span class="glyphicon glyphicon-plus"></span>Agregar</button>
 				    			  </td>
                   </tr>
                 </tbody>
@@ -223,7 +223,7 @@
 </div>
 <script>
   $(document).ready(function() {
-    $('#agregarMateriales').on('shown.bs.modal', function() {
+    $('#agregarMateriales, #agregarGrupos').on('shown.bs.modal', function() {
         $(document).off('focusin.modal');
     });
   });

@@ -44,15 +44,15 @@
         <input type="hidden" name="id" value="{{$datos->id}}">
             <div class="form-group">
                 <label for="Nombre">Nombre de la Empresa:</label>
-                <input name="nombre" type="text" class="form-control" placeholder="Teclea el nombre de la empresa" value="{{$datos->nombre}}">
+                <input name="nombre" type="text" class="form-control" placeholder="Teclea el nombre de la empresa" value="{{$datos->nombre}}" required>
             </div>
             <div class="form-group">
                 <label for="Direccion">Dirección:</label>
-                <input name="direccion" type="text" class="form-control" placeholder="Teclea la dirección de la empresa" value="{{$datos->direccion}}">
+                <input name="direccion" type="text" class="form-control" placeholder="Teclea la dirección de la empresa" value="{{$datos->direccion}}" required>
             </div>
             <div class="form-group">
                 <label for="Responsable">Responsable:</label>
-                <input name="responsable" type="text" class="form-control" placeholder="Responsable de la empresa" value="{{$datos->responsable}}">
+                <input name="responsable" type="text" class="form-control" placeholder="Responsable de la empresa" value="{{$datos->responsable}}" required>
             </div>
             <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Actualizar</button>&nbsp;&nbsp;

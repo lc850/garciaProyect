@@ -17,6 +17,7 @@
       line-height: 5px;
       background-color: black;
       border-color: black;
+      width: 100%;
     }
     #div-largo {
       position:fixed;
@@ -38,6 +39,11 @@
     #info {
       color:black;
       margin: 0;
+      text-align: right;
+    }
+    #info2 {
+      color:black;
+      margin: 0;
       text-align: center;
     }
     #footer{
@@ -47,7 +53,7 @@
     }
     #nom{
     position : absolute;
-    bottom : 40px;
+    bottom : 15px;
     width: 100%;
     }
     #contenedor{
@@ -55,7 +61,7 @@
     }
     #datos{
       position:fixed;
-      top:15%;
+      top:10%%;
       width: 100%;
     }
     .celda_en{
@@ -73,18 +79,18 @@
       font-weight: bold;
       text-align: center;
     }
-    th {
-      background: #d2d2d2;
-      border-color: #d2d2d2;
-    }
     td, th {
       border-width: 0.5px;
       padding: 0.5em;
       position: relative;
       text-align: left;
-      border-radius: 0.30em;
+      border-radius: 5px;
       border-style: solid;
   }
+    th {
+      background: #d2d2d2;
+      border-color: #d2d2d2;
+    }
   td {
     border-color: #ddd;
   }
@@ -113,16 +119,16 @@
 </head>
 <body>
   <div class="header">
-    <div id="div-b">
-      <h1 id="info">GARCIA ELECTRICIDAD</h1>
+    <div id="div-b" align="right">
+      <h3 id="info">GARCÍA ELECTRICIDAD</h3>
       <hr>
-      <h4 id="info">Instalaciones en alta y baja tensión líneas</h4>
-      <h4 id="info">Aéreas y subterraneas subestaciones eléctricas</h4>
-      <h4 id="info">Alumbrado público y asesoría eléctrica</h4>
-      <h3 id="info">Ing. Jaime García Cervantes</h3>
+      <h5 id="info">Instalaciones en alta y baja tensión líneas</h5>
+      <h5 id="info">aéreas y subterraneas subestaciones eléctricas</h5>
+      <h5 id="info">alumbrado público y asesoría eléctrica</h5>
+      <h6 id="info">Ing. Jaime García Cervantes</h6>
     </div>
     <div id="div-a">
-        <img src="images/torres.jpeg" width="240px">
+        <img src="images/torres.jpeg" width="200px">
     </div>
   </div>
   <table id="datos" width="100%">
@@ -149,12 +155,12 @@
     </tr>
     <tr>
       <td class="noborde cliente">
-        <h3><strong><u>AT'N: {{$cotizacion->clientes->nombre}}</u><br>P R E S E N T E.-</strong></h3>
+        <h3>{{$cotizacion->clientes->nombre}}<br><strong>AT'N: {{$cotizacion->clientes->representante}}<br>P R E S E N T E.-</strong></h3>
       </td>
     </tr>
   </table>
     <div id="div-largo">
-      <p style="text-align: justify; margin-top: 40px;">Por este conducto presentamos a su atenta consideración nuestro presupuesto correspondiente a: {{$cotizacion->descripcion}}.</p>
+      <p style="text-align: justify; margin-top: 9%px;">Por este conducto presentamos a su atenta consideración nuestro presupuesto correspondiente a: {{$cotizacion->descripcion}}.</p>
       <p><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       A continuación detallamos nuestro presupuesto:</strong></p>
       <table class="inventory">
@@ -162,17 +168,19 @@
           <tr>
             <th width="10%">Nro.</th>
             <th width="70%">Descripcion</th>
-            <th width="10%">Cantidad</th>
-            <th width="20%">Total</th>
+            <th width="10%">Cant.</th>
+            <th width="20%">P. Unitario</th>
+            <th width="25%">Total</th>
           </tr>
         </thead>
         <tbody>
-        @foreach($listado as $gpo)
+        @foreach($listado[0]->grupos as $gpo)
           <tr>
             <td class="centrado">{{$i=$i+1}}</td>
             <td>{{$gpo->descripcion}}</td>
-            <td class="centrado">1</td>
-            <td>$ {{number_format($gpo->total,2,'.',',')}}</td>
+            <td class="centrado">{{$gpo->pivot->cantidad}}</td>
+            <td class="centrado">Pendiente</td>
+            <td class="centrado">Pendiente$ {{number_format($gpo->total,2,'.',',')}}</td>
           </tr>
         @endforeach
         </tbody>
@@ -193,7 +201,7 @@
           </tr>
         </tbody>
       </table>
-      <br><br><br><br><br><br>
+      <br><br><br><br>
       <p align="justify">{{$cotizacion->mensajes->msg1}}</p>
       <p align="justify">{{$cotizacion->mensajes->msg2}}</p>
       <p align="justify">{{$cotizacion->mensajes->msg3}}</p>
@@ -203,13 +211,25 @@
 
     <div id="nom">
         <p align="center">
+        <img src="images/firma.jpg" alt=""><br>
           <strong>A T E N T A M E N T E</strong><br>
-          <strong>ING. JAIME GARCÍA CERVANTES</strong>
+          <strong>
+            @if(isset($datos))
+              {{$datos->responsable}}
+            @endif
+          </strong>
         </p>
     </div>
 
   <div class="footer">
-    <hr><h6 id="info">BAHÍA DE ALTATA #1478 COL. NUEVO CULIACÁN TELS. 717-46-42 Y 715-37-98 CEL. (667)751-60-71 CULIACÁN, SINALOA.</h6>
+    <hr><h6 id="info2">
+    @if(isset($datos))
+      {{$datos->direccion}}
+    @endif 
+    , Culiacán, Sin.
+    TELS. 717-46-42 Y 715-37-98 CEL. (667)751-60-71 CULIACÁN, SINALOA.
+    www.garciaelectricidad.com.mx
+    </h6>
   </div>
 
   

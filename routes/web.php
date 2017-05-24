@@ -111,6 +111,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::post('/guardarMensajes/{id}', 'cotizacionesController@guardarMensajes');
 
+	Route::get('/prueba/{id}', 'cotizacionesController@prueba');
+
 
 
 	//Clientes
