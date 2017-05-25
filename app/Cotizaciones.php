@@ -95,6 +95,7 @@ class Cotizaciones extends Model
                     $nom_gpo=$mats->gpo_nom;
                     $id_gpo=$mats->id_grupo;
                     $grupo=$grupoActual;
+                    $cant_gpo=$mats->cantidad_gpo;
                 }
                 array_push($materiales, $mats);
             }

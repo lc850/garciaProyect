@@ -12,7 +12,7 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
             .success(function(response) {
                 $scope.cotizaciones = response.cotizaciones;
                 $scope.clientes = response.clientes;
-                console.log($scope.cotizaciones);
+                //console.log($scope.cotizaciones);
                 $scope.formRegister={'fecha': hoy, 'fecha_impresion': hoy};
                 //$scope.formRegister.fecha=moment().format("YYYY-MM-DD");
                 //console.log($scope.tipos);
@@ -120,7 +120,7 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
         }).
             success(function(response) {
                 $scope.gruposCotizacion = response.grupos_cotizacion;
-                console.log($scope.gruposCotizacion);
+                //console.log($scope.gruposCotizacion);
                 $scope.gpoNoCot=response.gpo_noCot;
                 $scope.materiales=response.materiales;
                 $scope.$watch('searchMats', function (term) {
