@@ -1,4 +1,4 @@
 /app/Exceptions/Handler.php
 .env
 /resources/assets/js/app/app.js
-/app/app.js
+public/app/app.js
