@@ -40,7 +40,7 @@
 	    		<tr ng-repeat="c in filteredcotizaciones | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
 	    			<td class="text-center"><% c.folio %></td>
 	    			<td class="text-center"><% c.descripcion %></td>
-            <td class="text-center"><% c.cliente.nombre %></td>
+            <td class="text-center"><% c.clientes.representante %></td>
 	    			<td class="text-center"><% c.fecha %></td>
             <td class="text-center"><% c.fecha_impresion %></td>
 	    			<td class="text-center">
