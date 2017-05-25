@@ -119,7 +119,8 @@ class cotizacionesController extends Controller
 
     public function prueba($id){
         $mats=Cotizaciones::where('id', $id)->with('grupos')->get();
-        dd($mats);
+        //$mats=$mats[0]->grupos[0]->materialesDetalle[0]->pivot->sum('precio');
+        dd($mats[0]->grupos[0]->materialesDetalle);
         return $mats;
     }
 }

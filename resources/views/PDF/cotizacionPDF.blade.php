@@ -179,8 +179,8 @@
             <td class="centrado">{{$i=$i+1}}</td>
             <td>{{$gpo->descripcion}}</td>
             <td class="centrado">{{$gpo->pivot->cantidad}}</td>
-            <td class="centrado">Pendiente</td>
-            <td class="centrado">Pendiente$ {{number_format($gpo->total,2,'.',',')}}</td>
+            <td class="centrado">$ {{number_format(($gpo->materialesDetalle->sum('cant_precio')),2,'.',',')}}</td>
+            <td class="centrado">$ {{number_format(($gpo->materialesDetalle->sum('cant_precio')*$gpo->pivot->cantidad),2,'.',',')}}</td>
           </tr>
         @endforeach
         </tbody>

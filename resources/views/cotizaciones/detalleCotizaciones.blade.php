@@ -79,7 +79,7 @@
       <div class="panel-heading" role="tab" id="heading<%gc.id%>">
         <h4 class="panel-title">
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%gc.id%>" aria-expanded="true" aria-controls="collapse<%gc.id%>">
-             <% gc.grupo %> (Cantidad: <% gc.cant_gpo %>) Total: <% gc.total | currency %>
+             <% gc.grupo %> --- <b>Cantidad:</b> <% gc.cant_gpo %>--- <b>Total:</b> <% gc.total | currency %>
           </a>
           <span class="btn btn-default btn-xs pull-right" ng-click="eliminarGrupoCotizacion({{$cotizacion->id}}, gc.id)"><i class="glyphicon glyphicon-remove"></i>Eliminar grupo</span>
         </h4>
@@ -93,7 +93,8 @@
                   <th>Descripción</th>
                   <th class="text-center">Unidad</th>
                   <th class="text-center">Cantidad</th>
-                  <th class="text-center">Precio</th>
+                  <th class="text-center">Precio U</th>
+                  <th class="text-center">Total</th>
                   <th class="text-center">
                     <button id="btn-add" class="btn btn-info btn-xs" data-target="#agregarMateriales" data-toggle="modal" ng-click="cargaDatos({{$cotizacion->id}}, gc.id, gc.cant_gpo)"><span class="glyphicon glyphicon-plus"></span>Agregar material</button>
                   </th>
@@ -105,6 +106,7 @@
                   <td class="text-center"><% gcm.unidad %></td>
                   <td class="text-center"><% gcm.cantidad %></td>
                   <td class="text-center"><% gcm.precio | currency %></td>
+                  <td class="text-center"><% gcm.precio*gcm.cantidad | currency %></td>
                   <td class="text-center"><button type="button" class="btn btn-xs btn-danger" ng-click="borrarMaterial(gcm.id, {{$cotizacion->id}})"><i class="glyphicon glyphicon-remove"></i></button></td>
                 </tr>
               </tbody>
