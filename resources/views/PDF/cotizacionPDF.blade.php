@@ -3,8 +3,8 @@
   <style>
     @page { margin: 100px 25px;}
     header { position: fixed; top: -60px; left: 25px; right: 25px;}
-    footer { position: fixed; bottom: 30px; left: 0px; right: 0px; height: 50px; text-align: center;}
-    section { page-break-after: avoid; margin: 50px 25px 60px 25px;}
+    footer { position: fixed; bottom: -40px; left: 0px; right: 0px; height: 30px; text-align: center; margin:0px;}
+    section { margin: 0px 25px -10px 25px; position: relative; top:50px;}
     .info {
       color:black;
       text-align: right;
@@ -36,7 +36,6 @@
     td, th {
       border-width: 1px;
       padding: 0.4em;
-      position: relative;
       text-align: left;
       border-radius: 5px;
       border-style: solid;
@@ -55,15 +54,31 @@
     }
     .contenido{
       margin-top: 85px;
+      page-break-after: avoid;
     }
     .division{
       margin-top: 100px;
       color: red;
     }
     .mensajes{
-      font-size: 12px;
+      font-size: 12.5px;
+      margin: 0px;
     }
     .msg{
+      margin: 0px;
+    }
+    .firma{
+      position: absolute;
+      bottom: 0;
+      margin-top: 0px;
+      margin-bottom: -10px;
+      font-size: 12px;
+      margin-left: 40%;
+    }
+    .centrado{
+      text-align: center;
+    }
+    .image{
       margin: 0px;
     }
   </style>
@@ -84,16 +99,8 @@
     </div>
     <hr class="division">
   </header>
-  <footer>
-        <img src="images/firma.jpg" alt=""><br>
-          <strong>A T E N T A M E N T E</strong><br>
-          <strong>
-            @if(isset($datos))
-              {{$datos->responsable}}
-            @endif
-          </strong>
+  <footer><hr>
     <h6 style="margin: 2px;">
-    <hr>
     @if(isset($datos))
       {{$datos->direccion}}
     @endif 
@@ -126,8 +133,10 @@
     </div>
     <br>
     <div class="contenido">
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Por este conducto presentamos a su atenta consideración nuestro presupuesto correspondiente a: {{$listado[0]->descripcion}}.
-      <br><br>
+    <div style="text-align: justify; margin: 0;">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Por este conducto presentamos a su atenta consideración nuestro presupuesto correspondiente a: <i>{{$listado[0]->descripcion}}</i>.
+    </div>
+      <br>
       <table class="inventory" width="100%">
         <thead>
           <tr>
@@ -144,8 +153,8 @@
             <td class="centrado">{{$i=$i+1}}</td>
             <td>{{$gpo->descripcion}}</td>
             <td class="centrado">{{$gpo->pivot->cantidad}}</td>
-            <td class="centrado">$ {{number_format(($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
-            <td class="centrado">$ {{number_format($gpo->pivot->cantidad*($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
+            <td>$ {{number_format(($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
+            <td>$ {{number_format($gpo->pivot->cantidad*($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
           </tr>
         @endforeach
         <tr>
@@ -172,6 +181,16 @@
         <p class="msg" align="justify">{{$listado[0]->mensajes->msg4}}</p>
         <p class="msg" align="justify">{{$listado[0]->mensajes->msg5}}</p>
       </div>
+      <div class="firma" style="text-align: center;">
+        <img class="image" src="images/firma.jpg"><br>
+        <b>A T E N T A M E N T E </b><br>
+          <strong style="margin: 0px;">
+            @if(isset($datos))
+              {{$datos->responsable}}
+            @endif
+          </strong>
+      </div>
+
     </div>
     </section>
   </main>
