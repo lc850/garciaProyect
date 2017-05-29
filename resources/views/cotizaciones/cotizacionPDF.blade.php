@@ -24,7 +24,7 @@
 	    	</div>
 	    	<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 	      	<div class="panel-body">
-	      		<form action="{{url('/guardarMensajes')}}/{{$cotizacion->id}}" method="POST">
+	      		<form action="{{url('/guardarMensajes')}}/{{$cotizacion->id}}" method="POST" id="form">
 	      		<input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
 	      		<input id="id_msg" type="hidden" name="id_msg" value="{{ $cotizacion->mensajes->id }}">
 		        <div class="row">
@@ -66,7 +66,11 @@
 		                  <div class="left-inner-addon">
 		                    <i class="fa fa-calendar"></i>
 		                    <input class="form-control" name="fecha_impresion" type="text" id="datepicker"  required placeholder="Fecha de impresión" value="{{$cotizacion->fecha_impresion}}">
-		                  </div> 
+		                  </div>
+		                  <div class="left-inner-addon">
+				              <i class="fa fa-percent" style="z-index:0;"></i>
+				              <input type="number"  class="form-control" placeholder="Indirecto" id="indirecto" name="indirecto" value="{{$cotizacion->mensajes->indirecto}}">
+				           </div>
 		                </div>
 		        	</div>
 				</div><hr>
@@ -101,6 +105,13 @@
             showButtonPanel: true,
             yearRange: '1950:'+ new Date(f.getFullYear(),f.getMonth(),f.getDate()),
           }).attr('readonly', 'true');
+          $( "#form" ).submit(function( event ) {
+			  if ($("#indirecto").val()>100 || $("#indirecto").val()<0){
+			  	event.preventDefault();
+			  	$("#indirecto").css('border', '1px solid red');
+			  	return false;
+		  	}
+		  });
         });
 </script>
 @stop

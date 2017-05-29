@@ -80,6 +80,22 @@ class cotizacionesController extends Controller
         return $pdf->stream('Cotizacion'.$cotizacion->folio); 
     }
 
+    public function detalladoPDF($id){
+        $listado=Cotizaciones::listadoPDF($id);
+        $total=Cotizaciones::getTotal($id);
+        $datos=Datos::first();
+        $i=0;
+        $cotizacion=Cotizaciones::find($id);
+
+        //dd($cotizacion);
+
+        $vista=view('PDF/detalladoPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos'));
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($vista);
+        $pdf->setPaper('letter');
+        return $pdf->stream('Cotizacion'.$cotizacion->folio); 
+    }
+
     public function agregarGrupoCotizacion(Request $request){
         $vacio=Cotizaciones::agregarGrupoCotizacion($request);
         $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));

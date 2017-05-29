@@ -36,7 +36,6 @@
         </button>
         <a class="navbar-brand" href="#">Cotización {{$cotizacion->folio}}</a>
       </div>
-
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
@@ -47,21 +46,28 @@
             </a>
           </li>
           <li>
-            <a href="{{url('ajusteCotizacion')}}/{{$cotizacion->id}}">
-              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Detalle PDF
+            <a href="{{url('ajusteCotizacion')}}/{{$cotizacion->id}}">             
+              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+              General PDF
+            </a>
+          </li>
+          <li>
+            <a href="{{url('detalladoPDF')}}/{{$cotizacion->id}}">             
+              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+              Detallado PDF
             </a>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a data-toggle="modal" href="#agregarGrupos">Agregar grupo</a></li>
-              <li><a href="{{url('cotizacionPDF')}}/{{$cotizacion->id}}" target="_blank">Generar PDF</a></li>
+              <li><a href="{{url('ajusteCotizacion')}}/{{$cotizacion->id}}" target="_blank">General PDF</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="{{url('/cotizaciones')}}">Regresar</a></li>
             </ul>
           </li>
         </ul>
-        <form class="navbar-form navbar-left">
+        <form class="navbar-form navbar-right">
           <div class="form-group">
             <div class="left-inner-addon">
               <i class="fa fa-search" style="z-index:0;"></i>
@@ -79,7 +85,9 @@
       <div class="panel-heading" role="tab" id="heading<%gc.id%>">
         <h4 class="panel-title">
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%gc.id%>" aria-expanded="true" aria-controls="collapse<%gc.id%>">
-             <% gc.grupo %> --- <b>Cantidad:</b> <% gc.cant_gpo %>--- <b>Total:</b> <% gc.total | currency %>
+             <kbd><% gc.grupo %></kbd>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>Cantidad:<% gc.cant_gpo %></kbd>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>Total U:<% gc.total | currency %></kbd>
           </a>
           <span class="btn btn-default btn-xs pull-right" ng-click="eliminarGrupoCotizacion({{$cotizacion->id}}, gc.id)"><i class="glyphicon glyphicon-remove"></i>Eliminar grupo</span>
         </h4>

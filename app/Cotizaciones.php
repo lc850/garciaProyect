@@ -125,8 +125,7 @@ class Cotizaciones extends Model
     }
 
     public static function listadoPDF($id){
-        $lista=Cotizaciones::where('id', $id)->with('grupos')->get();
-
+        $lista=Cotizaciones::where('id', $id)->with('grupos')->with('mensajes')->get();
         return $lista;
     }
 
@@ -215,6 +214,7 @@ class Cotizaciones extends Model
             $mensaje->msg3=$request->input('msg3');
             $mensaje->msg4=$request->input('msg4');
             $mensaje->msg5=$request->input('msg5');
+            $mensaje->indirecto=$request->input('indirecto');
         $mensaje->save();
 
         if($request->input('fecha_impresion')!=null){

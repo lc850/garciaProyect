@@ -21,6 +21,7 @@ class CreateMensajesTable extends Migration
             $table->string('msg3', 800)->nullable();
             $table->string('msg4', 800)->nullable();
             $table->string('msg5', 800)->nullable();
+            $table->integer('indirecto')->nullable()->default(0);
             $table->timestamps();
 
             $table->foreign('cotizacion_id')
