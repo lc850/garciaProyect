@@ -77,7 +77,8 @@
 				<div class="row">
 					<div class="col-xs-12 text-center">
 						<button type="submit" class="btn btn-primary">Guardar</button>&nbsp;&nbsp;&nbsp;
-						<a href="{{url('/detalleCotizacion')}}/{{$cotizacion->id}}" class="btn btn-danger">Regresar</a>
+						<a href="{{url('/detalleCotizacion')}}/{{$cotizacion->id}}" class="btn btn-danger">Regresar</a>&nbsp;&nbsp;&nbsp;
+						<a href="{{url('/detalladoPDF')}}/{{$cotizacion->id}}" class="btn btn-default">Generar PDF detalle</a>
 					</div>
 				</div>
 	    	</form>

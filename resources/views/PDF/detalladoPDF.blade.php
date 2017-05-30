@@ -190,9 +190,45 @@
             @endif
           </strong>
       </div>
-
-    </div>
     </section>
+    <div style="page-break-after:always;"></div>
+    <div>
+      Detalle del presupuesto.:
+        @foreach($listado[0]->grupos as $gpo)
+        <table class="inventory" width="100%">
+        <thead>
+          <tr>
+            <th colspan="3">{{$gpo->descripcion}}</th>
+            <th colspan="2">Cantidad: {{$gpo->pivot->cantidad}}</th>
+          </tr>
+          <tr>
+            <td width="10%"><b>Nro.</b></td>
+            <td width="70%"><b>Descripcion</b></td>
+            <td width="10%"><b>Cant.</b></td>
+            <td width="18%"><b>P. Unitario</b></td>
+            <td width="21%"><b>Total</b></td>
+          </tr>
+        </thead>
+        <span style="color: white;">{{$i=0}}</span>
+        <tbody>
+          @foreach($gpo->materialesDetalle as $mat)
+          <tr>
+            <td class="centrado">{{$i=$i+1}}</td>
+            <td>{{$mat->descripcion}}</td>
+            <td class="centrado">{{$mat->pivot->cantidad}}</td>
+            <td>$ {{number_format(($mat->pivot->precio+($mat->pivot->precio*$listado[0]->mensajes->indirecto/100)),2,'.',',')}}</td>
+            <td>$ {{number_format(($mat->pivot->cantidad*($mat->pivot->precio+($mat->pivot->precio*$listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
+          </tr>
+        @endforeach
+        <tr>
+          <td colspan="3" style="border: 0px;"></td>
+          <td style="text-align: right; border: 0px;"><b> SUBTOTAL:</b></td>
+          <td style="text-align: left;">$ {{number_format($gpo->pivot->cantidad*($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
+        </tr>
+        </tbody>
+      </table>
+        @endforeach
+    </div>
   </main>
 </body>
 </html>
