@@ -121,7 +121,6 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
         }).
             success(function(response) {
                 $scope.gruposCotizacion = response.grupos_cotizacion;
-                console.log($scope.gruposCotizacion); return;
                 $scope.gpoNoCot=response.gpo_noCot;
                 $scope.materiales=response.materiales;
                 $scope.$watch('searchMats', function (term) {
