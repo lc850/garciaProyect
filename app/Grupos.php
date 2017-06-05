@@ -13,10 +13,9 @@ class Grupos extends Model
     {
         return $this->belongsToMany('App\Materiales', 'detalle_cotizaciones', 'id_grupo', 'id_material')
          ->withPivot('cantidad_gpo', 'id_cotizacion', 'precio', 'cantidad')
-         ->selectRaw('detalle_cotizaciones.cantidad*detalle_cotizaciones.precio AS cant_precio, materiales.*')
+         ->selectRaw('detalle_cotizaciones.cantidad*detalle_cotizaciones.precio AS cant_precio, materiales.*, detalle_cotizaciones.precio AS p, detalle_cotizaciones.id_cotizacion AS id_c')
          ->withTimestamps();
     }
-
 
 
     public static function regresarGrupos(){

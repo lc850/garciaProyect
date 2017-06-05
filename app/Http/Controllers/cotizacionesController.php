@@ -87,8 +87,6 @@ class cotizacionesController extends Controller
         $i=0;
         $cotizacion=Cotizaciones::find($id);
 
-        //dd($listado);
-
         $vista=view('PDF/detalladoPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);
@@ -134,9 +132,14 @@ class cotizacionesController extends Controller
     }
 
     public function prueba($id){
-        $mats=Cotizaciones::where('id', $id)->with('grupos')->get();
-        //$mats=$mats[0]->grupos[0]->materialesDetalle[0]->pivot->sum('precio');
-        dd($mats[0]->grupos[0]->materialesDetalle);
+        $mats = Cotizaciones::where('id', $id)->with(['grupos' => function ($q) use ($id) { 
+            $q->with(['materialesDetalle' => function ($query) use ($id) {
+                $query->wherePivot('id_cotizacion', $id);
+            }]);
+        }])->get();
+
+        dd($mats[0]->grupos[0]);
+
         return $mats;
     }
 }

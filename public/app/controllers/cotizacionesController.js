@@ -2,6 +2,7 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
     
     $scope.search="";
     $scope.search2="";
+    $scope.search3="";
     $scope.searchMats="";
     $scope.pageSize= 8;
     //Mandar la hora del server
@@ -120,14 +121,14 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
         }).
             success(function(response) {
                 $scope.gruposCotizacion = response.grupos_cotizacion;
-                //console.log($scope.gruposCotizacion);
+                console.log($scope.gruposCotizacion); return;
                 $scope.gpoNoCot=response.gpo_noCot;
                 $scope.materiales=response.materiales;
                 $scope.$watch('searchMats', function (term) {
                     $scope.filteredmateriales = filterFilter($scope.materiales, term);
                     $scope.currentPage = 1;
                 });
-                $scope.$watch('search2', function (term) {
+                $scope.$watch('search3', function (term) {
                     $scope.filteredgpoNoCot = filterFilter($scope.gpoNoCot, term);
                     $scope.currentPage = 1;
                 });

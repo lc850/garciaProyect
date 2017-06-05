@@ -134,7 +134,7 @@
     <br>
     <div class="contenido">
     <div style="text-align: justify; margin: 0;">
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Por este conducto presentamos a su atenta consideración nuestro presupuesto correspondiente a: <i>{{$listado[0]->descripcion}}</i>.
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Por este conducto presentamos a su atenta consideración nuestro presupuesto correspondiente a: <i>{{$listado[0]->descripcion}}</i>.
     </div>
       <br>
       <table class="inventory" width="100%">

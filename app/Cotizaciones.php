@@ -23,7 +23,6 @@ class Cotizaciones extends Model
 
     public function grupos(){
         return $this->belongsToMany('App\Grupos', 'cotizaciones_grupos', 'id_cotizacion', 'id_grupo')
-            ->with('materialesDetalle')
             ->withPivot('cantidad')
             ->withTimestamps();
     }
@@ -125,7 +124,13 @@ class Cotizaciones extends Model
     }
 
     public static function listadoPDF($id){
-        $lista=Cotizaciones::where('id', $id)->with('grupos')->with('mensajes')->get();
+        $lista=Cotizaciones::where('id', $id)->with(['grupos' => function ($q) use ($id) {
+            $q->orderBy('grupos.id', 'ASC'); 
+            $q->with(['materialesDetalle' => function ($query) use ($id) {
+                $query->wherePivot('id_cotizacion', $id);
+            }]);
+        }])->get();
+        //dd($lista[0]->grupos[0]->materialesDetalle);
         return $lista;
     }
 
