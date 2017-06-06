@@ -131,6 +131,13 @@ class cotizacionesController extends Controller
         return redirect('/ajusteCotizacion/'.$id);
     }
 
+    public function actualizarCantidadGrupo(Request $request){
+        Cotizaciones::actualizarCantidadGrupo($request);
+        $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
+        $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($request->input("id_cot"));
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion));
+    }
+
     public function prueba($id){
         $mats = Cotizaciones::where('id', $id)->with(['grupos' => function ($q) use ($id) { 
             $q->with(['materialesDetalle' => function ($query) use ($id) {

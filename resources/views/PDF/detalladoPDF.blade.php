@@ -86,11 +86,11 @@
 <body>
   <header>
     <div class="logo">
-      <img src="images/torres.jpeg" alt="" width="150px"><br><br>
+      <img src="images/logopdf.jpeg" alt="" width="150px"><br><br>
     </div>
     <div class="datos">
     <p class="info">
-      <u><b>GARCÍA ELECTRICIDAD</b></u><br>
+      <b>GARCÍA ELECTRICIDAD</b> <br>
       Instalaciones en alta y baja tensión líneas <br>
       aéreas y subterraneas subestaciones eléctricas <br>
       alumbrado público y asesoría eléctrica <br>

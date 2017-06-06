@@ -121,6 +121,7 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
         }).
             success(function(response) {
                 $scope.gruposCotizacion = response.grupos_cotizacion;
+                //console.log($scope.gruposCotizacion);
                 $scope.gpoNoCot=response.gpo_noCot;
                 $scope.materiales=response.materiales;
                 $scope.$watch('searchMats', function (term) {
@@ -325,5 +326,28 @@ app.controller('cotizacionesController', function($scope, $http, API_URL, filter
         error(function(response) {
             sweetAlert("Oops...", "Ocurrió un error!", "error");
         }); 
+    }
+
+    $scope.actualizaCantidad = function (id_cot, id_gpo){
+        $scope.datosCotizacion={"id_cot": id_cot, "id_gpo": id_gpo, "cant_gpo": angular.element('#nuevaCantidad'+id_gpo).val()};
+        //console.log($scope.datosCotizacion); 
+        $http({
+                method: 'POST',
+                data: $.param($scope.datosCotizacion),
+                url: API_URL + 'actualizarCantidadGrupo',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).
+            success(function(response) {
+                swal("Correcto!", "Se actualizó la cantidad", "success");
+                    $scope.gruposCotizacion = response.grupos_cotizacion;
+                    $scope.gpoNoCot=response.gpo_noCot;
+                    $scope.$watch('search3', function (term) {
+                    $scope.filteredgpoNoCot = filterFilter($scope.gpoNoCot, term);
+                    $scope.currentPage = 1;
+                });          
+            }).
+            error(function(response) {
+                weetAlert("Oops...", "Ocurrió un error!", "error");
+            }); 
     }
 });

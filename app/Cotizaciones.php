@@ -230,4 +230,16 @@ class Cotizaciones extends Model
 
     }
 
+    public static function actualizarCantidadGrupo($request){
+        DB::table('cotizaciones_grupos')
+            ->where('id_cotizacion', $request->input('id_cot'))
+            ->where('id_grupo', $request->input('id_gpo'))
+            ->update(['cantidad' => $request->input('cant_gpo')]);
+
+        DB::table('detalle_cotizaciones')
+            ->where('id_cotizacion', $request->input('id_cot'))
+            ->where('id_grupo', $request->input('id_gpo'))
+            ->update(['cantidad_gpo' => $request->input('cant_gpo')]);
+    }
+
 }

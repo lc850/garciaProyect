@@ -85,10 +85,11 @@
       <div class="panel-heading" role="tab" id="heading<%gc.id%>">
         <h4 class="panel-title">
           <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%gc.id%>" aria-expanded="true" aria-controls="collapse<%gc.id%>">
-             <kbd><% gc.grupo %></kbd>
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>Cantidad:<% gc.cant_gpo %></kbd>
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<kbd>Total U:<% gc.total | currency %></kbd>
+           <span class="label label-primary" style="font-size: 14px; font-weight: normal;"><% gc.grupo %></span>&nbsp;&nbsp;&nbsp;
+           <span class="label label-primary" style="font-size: 14px; font-weight: normal;">TOTAL UNITARIO : <% gc.total | currency %></span> 
           </a>
+          &nbsp;&nbsp;&nbsp;Cantidad: <input ng-init="nuevaCantidad=gc.cant_gpo" type="text" size="3" value="<%gc.cant_gpo%>" ng-model="nuevaCantidad" id="nuevaCantidad<%gc.id%>">
+          <button class="btn btn-default btn-xs" ng-click="actualizaCantidad({{$cotizacion->id}}, gc.id)">Guardar</button>
           <span class="btn btn-default btn-xs pull-right" ng-click="eliminarGrupoCotizacion({{$cotizacion->id}}, gc.id)"><i class="glyphicon glyphicon-remove"></i>Eliminar grupo</span>
         </h4>
       </div>

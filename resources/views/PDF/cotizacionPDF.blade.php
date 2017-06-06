@@ -86,7 +86,7 @@
 <body>
   <header>
     <div class="logo">
-      <img src="images/torres.jpeg" alt="" width="150px"><br><br>
+      <img src="images/logopdf.jpeg" alt="" width="150px"><br><br>
     </div>
     <div class="datos">
     <p class="info">
