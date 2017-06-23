@@ -77,7 +77,7 @@ class cotizacionesController extends Controller
         $vista=view('PDF/cotizacionPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);
-        return $pdf->stream('Cotizacion'.$cotizacion->folio); 
+        return $pdf->stream('Cotizacion'.$cotizacion->folio.'.pdf'); 
     }
 
     public function detalladoPDF($id){
@@ -91,7 +91,7 @@ class cotizacionesController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);
         $pdf->setPaper('letter');
-        return $pdf->stream('Cotizacion'.$cotizacion->folio); 
+        return $pdf->stream('Cotizacion'.$cotizacion->folio.'.pdf'); 
     }
 
     public function agregarGrupoCotizacion(Request $request){

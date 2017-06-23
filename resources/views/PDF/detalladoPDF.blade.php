@@ -104,14 +104,14 @@
     @if(isset($datos))
       {{$datos->direccion}}
     @endif 
-    TELS. 717-46-42 Y 715-37-98 CEL. (667)751-60-71 CULIACÁN, SINALOA <br>
+    TEL. 729-71-65 CEL. (667)751-60-71 CULIACÁN, SINALOA <br>
     www.garciaelectricidad.com.mx
     </h6>
   </footer>
   <main>
     <section>
     <div class="atn"><br>
-      <h4 style="margin: 0;">{{$listado[0]->clientes->nombre}}<br><strong>AT'N: {{$listado[0]->clientes->representante}}<br>P R E S E N T E.-</strong></h4>
+      <div style="margin: 0;"><b style="font-size: 20px;">{{$listado[0]->clientes->nombre}}</b><br>AT'N: {{$listado[0]->clientes->representante}}<br>P r e s e n t e.-</div>
     </div>
     <div class="infocot">
     <table style="padding-left: 52px;">
@@ -223,7 +223,7 @@
         <tr>
           <td colspan="3" style="border: 0px;"></td>
           <td style="text-align: right; border: 0px;"><b> SUBTOTAL:</b></td>
-          <td style="text-align: left;">$ {{number_format($gpo->pivot->cantidad*($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
+          <td style="text-align: left;">$ {{number_format(($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
         </tr>
         </tbody>
       </table>
