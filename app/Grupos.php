@@ -40,6 +40,7 @@ class Grupos extends Model
         $grupo= new Grupos();
         $grupo->descripcion=$request->input('descripcion');
         $grupo->id_tipo=$request->input('tipo');
+        $grupo->unidad=$request->input('unidad');
         $grupo->activo=1;
         $grupo->save();
     }
@@ -49,6 +50,7 @@ class Grupos extends Model
         $grupo = Grupos::find($request->input('id'));
             $grupo->descripcion = $request->input('descripcion1');
             $grupo->id_tipo = $request->input('tipo1');
+            $grupo->unidad=$request->input('unidad1');
             $grupo->save();
     }
 }

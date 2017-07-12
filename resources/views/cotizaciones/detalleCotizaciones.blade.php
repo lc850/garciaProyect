@@ -7,7 +7,7 @@
 @section('titulo')
 <h1>
     Detalle de cotización
-    <small>{{$cotizacion->folio}}</small>
+    <small>{{$cotizacion->folio}}.- {{$cotizacion->descripcion}}</small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -88,7 +88,7 @@
            <span class="label label-primary" style="font-size: 14px; font-weight: normal;"><% gc.grupo %></span>&nbsp;&nbsp;&nbsp;
            <span class="label label-primary" style="font-size: 14px; font-weight: normal;">TOTAL UNITARIO : <% gc.total | currency %></span> 
           </a>
-          &nbsp;&nbsp;&nbsp;Cantidad: <input ng-init="nuevaCantidad=gc.cant_gpo" type="text" size="3" value="<%gc.cant_gpo%>" ng-model="nuevaCantidad" id="nuevaCantidad<%gc.id%>">
+          &nbsp;&nbsp;&nbsp;Cantidad: <input ng-init="nuevaCantidad=gc.cant_gpo" type="number" size="3" value="<%gc.cant_gpo%>" ng-model="nuevaCantidad" id="nuevaCantidad<%gc.id%>">
           <button class="btn btn-default btn-xs" ng-click="actualizaCantidad({{$cotizacion->id}}, gc.id)">Guardar</button>
           <span class="btn btn-default btn-xs pull-right" ng-click="eliminarGrupoCotizacion({{$cotizacion->id}}, gc.id)"><i class="glyphicon glyphicon-remove"></i>Eliminar grupo</span>
         </h4>

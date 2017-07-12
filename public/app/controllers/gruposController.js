@@ -80,7 +80,7 @@ app.controller('gruposController', function($scope, $http, API_URL, filterFilter
     };
 
     $scope.submitUpdateGrupo = function() {
-        $scope.formUpdate={"descripcion1":angular.element('#descripcion1').val(),"tipo1":angular.element('#tipo1').val(),"id":angular.element('#id').val()};
+        $scope.formUpdate={"descripcion1":angular.element('#descripcion1').val(),"tipo1":angular.element('#tipo1').val(),"id":angular.element('#id').val(), "unidad1":angular.element('#unidad1').val()};
         $http({
             method: 'POST',
             data: $.param($scope.formUpdate),

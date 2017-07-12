@@ -33,6 +33,7 @@
     			<th class="text-center">Precio</th>
     			<th class="text-center">Unidad</th>
     			<th class="text-center">Clasificación</th>
+          <th class="text-center">Actualización</th>
     			<th class="text-center">
     				<button id="btn-add" class="btn btn-primary btn-xs" data-target="#dataRegister" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Nuevo material</button>
     			</th>
@@ -49,6 +50,7 @@
 	    				<span ng-if="m.clasificacion==2">Media</span>
 	    				<span ng-if="m.clasificacion==3">Alta</span>
     				</td>
+            <td class="text-center"><% m.updated_at %></td>
 	    			<td class="text-center">
 	    				<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#dataUpdate" data-id="<% m.id %>" data-codigo="<% m.codigo %>" data-descripcion="<% m.descripcion %>" data-precio="<% m.precio %>" data-cantidad="<% m.cantidad %>" data-unidad="<% m.unidad %>" data-clasificacion="<% m.clasificacion %>"><i class="glyphicon glyphicon-edit"></i></button>
                         <button type="button" class="btn btn-xs btn-danger" ng-click="borrar(m.id)"><i class="glyphicon glyphicon-remove"></i></button>

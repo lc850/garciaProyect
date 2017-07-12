@@ -87,6 +87,8 @@ class cotizacionesController extends Controller
         $i=0;
         $cotizacion=Cotizaciones::find($id);
 
+        //dd($listado);
+
         $vista=view('PDF/detalladoPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);

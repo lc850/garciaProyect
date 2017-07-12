@@ -29,6 +29,7 @@
     		<thead>
     			<th class="text-center">ID</th>
     			<th class="text-center">Descripción</th>
+          <th class="text-center">Unidad</th>
     			<th class="text-center">Tipo</th>
     			<th class="text-center">
     				<button id="btn-add" class="btn btn-primary btn-xs" data-target="#dataRegister" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Nuevo Grupo</button>
@@ -38,10 +39,11 @@
 	    		<tr ng-repeat="g in filteredgrupos | startFrom:(currentPage-1)*pageSize | limitTo:pageSize">
 	    			<td class="text-center"><% g.id %></td>
 	    			<td class="text-center"><% g.descripcion %></td>
+            <td class="text-center"><% g.unidad %></td>
 	    			<td class="text-center"><% g.tipo_desc %></td>
 	    			<td class="text-center">
               <a class="btn btn-xs btn-success" href="{{url('materialesGrupo')}}/<%g.id%>"><i class="glyphicon glyphicon-wrench"></i></a>
-	    				<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#dataUpdate" data-id="<% g.id %>" data-descripcion="<% g.descripcion %>" data-tipo="<% g.tipo_desc %>" data-idtipo="<% g.id_tipo %>"><i class="glyphicon glyphicon-edit"></i></button>
+	    				<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#dataUpdate" data-id="<% g.id %>" data-descripcion="<% g.descripcion %>" data-tipo="<% g.tipo_desc %>" data-idtipo="<% g.id_tipo %>" data-unidadg="<% g.unidad %>"><i class="glyphicon glyphicon-edit"></i></button>
               <button type="button" class="btn btn-xs btn-danger" ng-click="borrar(g.id)"><i class="glyphicon glyphicon-remove"></i></button>
 	    			</td>
 	    		</tr>
@@ -73,6 +75,17 @@
                     <select name="tipo" id="tipo" class="form-control" ng-model="formRegister.tipo" required>
                       <option selected value="">Seleccione una tipo</option>
                       <option ng-repeat="t in tipos" value="<% t.id %>"><% t.descripcion %></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label for="unidad">Unidad:</label><br>
+                    <select  name="unidad" id="unidad" class="form-control" ng-model="formRegister.unidad" required>
+                      <option selected value="">Seleccione una unidad</option>
+                      <option value="PZA">PZA</option>
+                      <option value="MTS">MTS</option>
+                      <option value="ML">ML</option>
+                      <option value="TMO">TMO</option>
+                      <option value="LOTE">LOTE</option>
                     </select>
                 </div>
               </div>
@@ -110,6 +123,17 @@
                       <option ng-repeat="t in tipos" value="<% t.id %>"><% t.descripcion %></option>
                     </select>
                 </div>
+                <div class="form-group">
+                  <label for="unidad">Unidad:</label><br>
+                    <select  name="unidad1" id="unidad1" class="form-control" required>
+                      <option selected id="optunidad"></option>
+                      <option value="PZA">PZA</option>
+                      <option value="MTS">MTS</option>
+                      <option value="ML">ML</option>
+                      <option value="TMO">TMO</option>
+                      <option value="LOTE">LOTE</option>
+                    </select>
+                </div>
               </div>
               <input type="hidden" name="id" id="id">
 	      </div>
@@ -134,12 +158,15 @@
             var descripcion = button.data('descripcion') // Extraer la información de atributos de datos
             var tipo = button.data('tipo') // Extraer la información de atributos de datos
             var id_tipo = button.data('idtipo') // Extraer la información de atributos de datos
+            var unidadg = button.data('unidadg') // Extraer la información de atributos de datos
             
             var modal = $(this)
             modal.find('.modal-body #id').val(id)
             modal.find('.modal-body #descripcion1').val(descripcion)
             modal.find('.modal-body #opcion1').val(id_tipo)
             modal.find('.modal-body #opcion1').html(tipo)
+            modal.find('.modal-body #optunidad').val(unidadg)
+            modal.find('.modal-body #optunidad').html(unidadg)
         })
 
     });
