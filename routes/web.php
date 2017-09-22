@@ -117,6 +117,16 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::post('/actualizarCantidadGrupo', 'cotizacionesController@actualizarCantidadGrupo');
 
+	Route::post('/agregarServicioCotizacion', 'cotizacionesController@agregarServicioCotizacion');
+
+	Route::post('/removerServicioCotizacion', 'cotizacionesController@removerServicioCotizacion');
+
+	Route::post('/removerIndividualCotizacion', 'cotizacionesController@removerIndividualCotizacion');
+
+	Route::post('/agregarIndividualCotizacion', 'cotizacionesController@agregarIndividualCotizacion');
+
+	Route::post('/actualizarCantidadDetalle', 'cotizacionesController@actualizarCantidadDetalle');
+
 
 
 	//Clientes
@@ -130,6 +140,25 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/removerCliente', 'clientesController@removerCliente');
 
 	Route::post('/actualizarCliente', 'clientesController@actualizarCliente');
+
+	//Servicios
+
+	Route::get('/servicios', 'serviciosController@index');
+
+	Route::get('/obtenerServicios', 'serviciosController@obtenerServicios');
+
+	Route::post('/existeNombreServicio', 'serviciosController@existeNombreServicio');
+
+	Route::post('/registrarServicio', 'serviciosController@registrarServicio');
+
+	Route::post('/lastcodeServicio', 'serviciosController@lastcodeServicio');
+
+	Route::post('/removerServicio', 'serviciosController@removerServicio');
+
+	Route::post('/actualizarServicio', 'serviciosController@actualizarServicio');
+
+
+
 
 });
 

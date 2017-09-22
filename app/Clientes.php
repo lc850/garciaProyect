@@ -40,4 +40,12 @@ class Clientes extends Model
             $cliente->representante=$request->input('representante1');
             $cliente->save();
     }
+
 }
+
+
+
+
+
+
+

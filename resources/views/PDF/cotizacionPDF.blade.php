@@ -159,6 +159,30 @@
             <td>$ {{number_format($gpo->pivot->cantidad*($gpo->materialesDetalle->sum('cant_precio')+($gpo->materialesDetalle->sum('cant_precio')*($listado[0]->mensajes->indirecto/100))),2,'.',',')}}</td>
           </tr>
         @endforeach
+        @if(count($servicios)>0)
+          @foreach($servicios as $s)
+          <tr>
+            <td class="centrado">{{$i=$i+1}}</td>
+            <td>{{$s->nombre}}</td>
+            <td>{{$s->unidad}}</td>
+            <td class="centrado">{{$s->cantidad}}</td>
+            <td>$ {{number_format(($s->c_precio+($s->c_precio*$listado[0]->mensajes->indirecto/100)),2,'.',',')}}</td>
+            <td>$ {{number_format($s->c_p+($s->c_p*$listado[0]->mensajes->indirecto/100),2,'.',',')}}</td>
+          </tr>
+          @endforeach
+        @endif
+        @if(count($individuales)>0)
+          @foreach($individuales as $ind)
+          <tr>
+            <td class="centrado">{{$i=$i+1}}</td>
+            <td>{{$ind->descripcion}}</td>
+            <td>{{$ind->unidad}}</td>
+            <td class="centrado">{{$ind->cantidad}}</td>
+            <td>$ {{number_format(($ind->c_precio+($ind->c_precio*$listado[0]->mensajes->indirecto/100)),2,'.',',')}}</td>
+            <td>$ {{number_format($ind->c_p+($ind->c_p*$listado[0]->mensajes->indirecto/100),2,'.',',')}}</td>
+          </tr>
+          @endforeach
+        @endif
         <tr>
           <td colspan="4" style="border: 0px;"></td>
           <td style="text-align: right; border: 0px;"><b> SUBTOTAL:</b></td>

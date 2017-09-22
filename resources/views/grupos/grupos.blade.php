@@ -7,7 +7,6 @@
 @section('titulo')
 <h1>
     Administración de Grupos
-    
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i>Inicio</a></li>

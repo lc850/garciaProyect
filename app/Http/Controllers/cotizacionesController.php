@@ -8,6 +8,7 @@ use App\Cotizaciones;
 use App\Materiales;
 use App\Datos;
 use App\Grupos;
+use App\Servicios;
 use Carbon\Carbon;
 use DB;
 use PDF;
@@ -54,7 +55,12 @@ class cotizacionesController extends Controller
         $materiales=Materiales::regresarMateriales();
         $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($id_cot);
         $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($id_cot);
-        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion, "materiales" => $materiales));
+        $servicios=Servicios::regresarServiciosNoCotizacion($id_cot);
+        $serviciosCotizacion=Servicios::serviciosCotizacion($id_cot);
+        $individuales=Materiales::individualesCotizacion($id_cot);//materiales cotizacion
+        $noIndividuales=Materiales::regresarMaterialesNoCotizacion($id_cot);//materiales no en coti
+
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion, "materiales" => $materiales, "servicios" => $servicios, "serviciosCotizacion" => $serviciosCotizacion, "individuales" => $individuales, "noIndividuales" => $noIndividuales));
     }
 
     public function removerGrupoCotizacion(Request $request){
@@ -67,14 +73,21 @@ class cotizacionesController extends Controller
 
     public function cotizacionPDF($id){
         $listado=Cotizaciones::listadoPDF($id);
+        //dd($listado[0]->mensajes);
         $total=Cotizaciones::getTotal($id);
         $datos=Datos::first();
+        $servicios=Servicios::serviciosCotizacion($id);
+        $individuales=Materiales::individualesCotizacion($id);
+        if (count($servicios)>0) {
+            $total[0]->total+=$servicios->sum('c_p');
+        }
+        if (count($individuales)>0) {
+            $total[0]->total+=$individuales->sum('c_p');
+        }
         $i=0;
         $cotizacion=Cotizaciones::find($id);
 
-        //dd($cotizacion);
-
-        $vista=view('PDF/cotizacionPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos'));
+        $vista=view('PDF/cotizacionPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos', 'servicios', 'individuales'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);
         return $pdf->stream('Cotizacion'.$cotizacion->folio.'.pdf'); 
@@ -84,12 +97,20 @@ class cotizacionesController extends Controller
         $listado=Cotizaciones::listadoPDF($id);
         $total=Cotizaciones::getTotal($id);
         $datos=Datos::first();
+        $servicios=Servicios::serviciosCotizacion($id);
+        $individuales=Materiales::individualesCotizacion($id);
+        if (count($servicios)>0) {
+            $total[0]->total+=$servicios->sum('c_p');
+        }
+        if (count($individuales)>0) {
+            $total[0]->total+=$individuales->sum('c_p');
+        }
         $i=0;
         $cotizacion=Cotizaciones::find($id);
 
         //dd($listado);
 
-        $vista=view('PDF/detalladoPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos'));
+        $vista=view('PDF/detalladoPDF', compact('cotizacion', 'listado', 'i', 'total', 'datos', 'servicios', 'individuales'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($vista);
         $pdf->setPaper('letter');
@@ -101,6 +122,13 @@ class cotizacionesController extends Controller
         $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
         $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($request->input("id_cot"));
         return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion, "vacio" => $vacio));
+    }
+
+    public function agregarServicioCotizacion(Request $request){
+        $vacio=Servicios::agregarServicioCotizacion($request);
+        $serviciosNo=Servicios::regresarServiciosNoCotizacion($request->input("id_cot"));
+        $servicios=Servicios::serviciosCotizacion($request->input("id_cot"));
+        return response()->json(array("serviciosNo" => $serviciosNo, "servicios" => $servicios));
     }
 
     public function removerMaterialCotizacion(Request $request){
@@ -140,6 +168,31 @@ class cotizacionesController extends Controller
         return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion));
     }
 
+    public function removerServicioCotizacion(Request $request){
+        Cotizaciones::removerServicioCotizacion($request);
+        $serviciosNo=Servicios::regresarServiciosNoCotizacion($request->input("id_cot"));
+        $servicios=Servicios::serviciosCotizacion($request->input("id_cot"));
+        return response()->json(array("serviciosNo" => $serviciosNo, "servicios" => $servicios));
+
+    }
+
+    public function removerIndividualCotizacion(Request $request){
+        $id_cot=$request->input("id_cot");
+        Cotizaciones::removerIndividualCotizacion($request);
+        $individuales=Materiales::individualesCotizacion($id_cot);//materiales cotizacion
+        $noIndividuales=Materiales::regresarMaterialesNoCotizacion($id_cot);//materiales no en coti
+        return response()->json(array("individuales" => $individuales, "noIndividuales" => $noIndividuales));
+
+    }
+
+    public function agregarIndividualCotizacion(Request $request){
+        $id_cot=$request->input("id_cot");
+        Cotizaciones::agregarIndividualCotizacion($request);
+        $individuales=Materiales::individualesCotizacion($id_cot);//materiales cotizacion
+        $noIndividuales=Materiales::regresarMaterialesNoCotizacion($id_cot);//materiales no en coti
+        return response()->json(array("individuales" => $individuales, "noIndividuales" => $noIndividuales));
+    }
+
     public function prueba($id){
         $mats = Cotizaciones::where('id', $id)->with(['grupos' => function ($q) use ($id) { 
             $q->with(['materialesDetalle' => function ($query) use ($id) {
@@ -150,6 +203,13 @@ class cotizacionesController extends Controller
         dd($mats[0]->grupos[0]);
 
         return $mats;
+    }
+
+    public function actualizarCantidadDetalle(Request $request){
+        Cotizaciones::actualizarCantidadDetalle($request);
+        $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));
+        $gpo_noCotizacion=Cotizaciones::regresarGruposNoCotizacion($request->input("id_cot"));
+        return response()->json(array("grupos_cotizacion" => $gruposCotizacion, "gpo_noCot" => $gpo_noCotizacion));
     }
 }
 

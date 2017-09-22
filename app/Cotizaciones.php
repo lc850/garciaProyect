@@ -242,4 +242,34 @@ class Cotizaciones extends Model
             ->update(['cantidad_gpo' => $request->input('cant_gpo')]);
     }
 
+    public static function removerServicioCotizacion($request){
+        DB::table('cotizaciones_servicios')
+            ->where('servicio_id', '=', $request->input('id_servicio'))
+            ->where('cotizacion_id', '=', $request->input('id_cot'))
+            ->delete();
+    }
+
+    public static function removerIndividualCotizacion($request){
+        DB::table('cotizaciones_materiales')
+            ->where('material_id', '=', $request->input('id_individual'))
+            ->where('cotizacion_id', '=', $request->input('id_cot'))
+            ->delete();
+    }
+
+    public static function agregarIndividualCotizacion($request){
+        DB::table('cotizaciones_materiales')->insert(
+            ['cotizacion_id' => $request->input("id_cot"),
+             'material_id' => $request->input("id_ind"),
+             'cantidad' => $request->input("cantidad_ind"),
+             'precio' => $request->input("precio")
+            ]
+        );
+    }
+
+    public static function actualizarCantidadDetalle($request){
+       $detalle=detalle_cotizaciones::find($request->input("id_detalle"));
+       $detalle->cantidad=$request->input("cant_detalle");
+       $detalle->save();
+    }
+
 }

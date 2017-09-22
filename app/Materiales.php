@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Materiales extends Model
 {
@@ -46,6 +47,36 @@ class Materiales extends Model
     	$material=Materiales::find($id);
         $material->activo=0;
         $material->save();
+    }
+
+    public static function regresarMaterialesNoCotizacion($id){
+        $lista=DB::table('cotizaciones_materiales')
+            ->where('cotizacion_id', '=', $id)
+            ->pluck('material_id');
+
+        $materiales=DB::table('materiales')
+            ->whereNotIn('id', $lista)
+            ->where('activo', '=', 1)
+            ->orderBy('id', 'ASC')
+            ->get();
+
+        return $materiales;
+    }
+
+    public static function individualesCotizacion($id){
+        $lista=DB::table('cotizaciones_materiales')
+            ->where('cotizacion_id', '=', $id)
+            ->pluck('material_id');
+
+        $materiales=DB::table('materiales')
+            ->whereIn('materiales.id', $lista)
+            ->where('materiales.activo', '=', 1)
+            ->join('cotizaciones_materiales', 'materiales.id', '=', 'cotizaciones_materiales.material_id')
+            ->orderBy('id', 'ASC')
+            ->selectRaw('materiales.*, cotizaciones_materiales.cantidad, cotizaciones_materiales.precio AS c_precio, cotizaciones_materiales.precio*cotizaciones_materiales.cantidad as c_p')
+            ->get();
+
+        return $materiales;
     }
 
 }

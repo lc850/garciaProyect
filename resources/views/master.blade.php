@@ -187,6 +187,11 @@
           </a>
         </li>
         <li>
+          <a href="{{url('/servicios')}}">
+            <i class="fa fa-cogs"></i> <span>Servicios</span>
+          </a>
+        </li>
+        <li>
           <a href="{{url('/clientes')}}">
             <i class="fa fa-users"></i> <span>Clientes</span>
           </a>
