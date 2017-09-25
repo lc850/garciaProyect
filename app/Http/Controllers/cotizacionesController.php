@@ -117,6 +117,30 @@ class cotizacionesController extends Controller
         return $pdf->stream('Cotizacion'.$cotizacion->folio.'.pdf'); 
     }
 
+    public function detalladoPDF2($id){
+        $listado=Cotizaciones::listadoPDF($id);
+        $total=Cotizaciones::getTotal($id);
+        $datos=Datos::first();
+        $servicios=Servicios::serviciosCotizacion($id);
+        $individuales=Materiales::individualesCotizacion($id);
+        if (count($servicios)>0) {
+            $total[0]->total+=$servicios->sum('c_p');
+        }
+        if (count($individuales)>0) {
+            $total[0]->total+=$individuales->sum('c_p');
+        }
+        $i=0;
+        $cotizacion=Cotizaciones::find($id);
+
+        //dd($listado);
+
+        $vista=view('PDF/detalladoPDF2', compact('cotizacion', 'listado', 'i', 'total', 'datos', 'servicios', 'individuales'));
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($vista);
+        $pdf->setPaper('letter');
+        return $pdf->stream('Cotizacion'.$cotizacion->folio.'.pdf'); 
+    }
+
     public function agregarGrupoCotizacion(Request $request){
         $vacio=Cotizaciones::agregarGrupoCotizacion($request);
         $gruposCotizacion=Cotizaciones::regresaGruposCotizacion($request->input("id_cot"));

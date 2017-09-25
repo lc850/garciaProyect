@@ -101,6 +101,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/detalladoPDF/{id}', 'cotizacionesController@detalladoPDF');
 
+	Route::get('/detalladoPDF2/{id}', 'cotizacionesController@detalladoPDF2');
+
 	Route::post('/agregarGrupoCotizacion', 'cotizacionesController@agregarGrupoCotizacion');
 
 	Route::post('/removerMaterialCotizacion', 'cotizacionesController@removerMaterialCotizacion');

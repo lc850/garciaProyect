@@ -57,11 +57,15 @@
               General PDF
             </a>
           </li>
-          <li>
-            <a href="{{url('detalladoPDF')}}/{{$cotizacion->id}}">             
-              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-              Detallado PDF
-            </a>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;
+             Detalle PDF
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a data-toggle="modal" href="{{url('detalladoPDF2')}}/{{$cotizacion->id}}">Con detalle</a></li>
+              <li><a data-toggle="modal" href="{{url('detalladoPDF')}}/{{$cotizacion->id}}">Sin detalle</a></li>
+            </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones <span class="caret"></span></a>
